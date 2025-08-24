@@ -1,4 +1,6 @@
-/* eslint-disable react/require-default-props */
+
+/* eslint react/require-default-props: 0 */
+import React, { useEffect, useState } from 'react';
 import svgbutton from './assets/svgbutton.svg'; // <- tight-fit SVG file
 
 type SvgButtonProps = {
@@ -16,18 +18,38 @@ function SvgButton({
   width = 400,
   className = '',
   disabled = false,
-  title,
+  title = undefined,
 }: SvgButtonProps) {
+  const [isSelected, setIsSelected] = useState(false);
+  const [blinkColor, setBlinkColor] = useState<string | null>(null);
+  const [currentColor, setCurrentColor] = useState<string>('transparent');
+
+  const handleClick = () => {
+    if (isSelected) return;
+    setIsSelected(true);
+    setCurrentColor('orange');
+    setBlinkColor(Math.random() > 0.5 ? 'green' : 'red');
+    onClick?.();
+  };
+
+  useEffect(() => {
+    if (!isSelected || !blinkColor) return undefined;
+    const interval = setInterval(() => {
+      setCurrentColor((prev) => (prev === 'orange' ? blinkColor : 'orange'));
+    }, 500);
+    return () => clearInterval(interval);
+  }, [isSelected, blinkColor]);
+
   return (
     <button
       type="button"
-      onClick={onClick}
-      disabled={disabled}
+      onClick={handleClick}
+      disabled={disabled || isSelected}
       aria-label={label || title || 'button'}
       title={title || label}
-      className={`relative inline-flex items-center justify-center select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-2xl ${className}`}
+      className={`group relative inline-flex items-center justify-center select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-2xl hover:shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-shadow transition-colors ${className}`}
       style={{
-        background: 'transparent',
+        background: currentColor,
         border: 'none',
         padding: 0,
         width,
