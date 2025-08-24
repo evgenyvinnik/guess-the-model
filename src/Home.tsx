@@ -1,11 +1,7 @@
-import logo from './assets/logo.png';
+import MillionaireUI from './MillionaireUI.tsx';
 
 function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <img src={logo} alt="Guess The Model logo" className="w-64" />
-    </div>
-  );
+  return <MillionaireUI />;
 }
 
 export default Home;
