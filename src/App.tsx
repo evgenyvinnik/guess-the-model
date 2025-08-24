@@ -32,23 +32,59 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#242424] text-white">
-      <nav className="p-4">
-        <Link to="/" className="mr-4">Home</Link>
-        <Link to="/stats" className="mr-4">Stats</Link>
-        <button
-          type="button"
-          onClick={toggleMusic}
-          className="mr-2 rounded bg-gray-700 px-2 py-1"
-        >
-          Music: {musicOn ? 'On' : 'Off'}
-        </button>
-        <button
-          type="button"
-          onClick={toggleSfx}
-          className="rounded bg-gray-700 px-2 py-1"
-        >
-          SFX: {sfxOn ? 'On' : 'Off'}
-        </button>
+      <nav className="navbar bg-base-300">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <button
+              type="button"
+              className="btn btn-ghost lg:hidden"
+              aria-label="Open menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <ul
+              className="menu menu-sm dropdown-content mt-3 w-52 rounded-box bg-base-300 p-2 shadow"
+            >
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/stats">Stats</Link></li>
+              <li>
+                <button type="button" onClick={toggleMusic}>
+                  Music: {musicOn ? 'On' : 'Off'}
+                </button>
+              </li>
+              <li>
+                <button type="button" onClick={toggleSfx}>
+                  SFX: {sfxOn ? 'On' : 'Off'}
+                </button>
+              </li>
+            </ul>
+          </div>
+          <Link to="/" className="btn btn-ghost normal-case text-xl">
+            Guess the Model
+          </Link>
+        </div>
+        <div className="navbar-center hidden lg:flex">
+          <ul className="menu menu-horizontal px-1">
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/stats">Stats</Link></li>
+          </ul>
+        </div>
+        <div className="navbar-end hidden gap-2 lg:flex">
+          <button type="button" onClick={toggleMusic} className="btn btn-sm">
+            Music: {musicOn ? 'On' : 'Off'}
+          </button>
+          <button type="button" onClick={toggleSfx} className="btn btn-sm">
+            SFX: {sfxOn ? 'On' : 'Off'}
+          </button>
+        </div>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
