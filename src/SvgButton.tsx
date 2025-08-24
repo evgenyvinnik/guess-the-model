@@ -1,5 +1,6 @@
-import React from "react";
-import svgbutton from "./assets/svgbutton.svg"; // <- tight-fit SVG file
+/* eslint react/require-default-props: 0 */
+import React, { useEffect, useState } from 'react';
+import svgbutton from './assets/svgbutton.svg'; // <- tight-fit SVG file
 
 /**
  * SvgButton loads the tight-fit SVG via URL import and overlays an optional label.
@@ -8,29 +9,54 @@ import svgbutton from "./assets/svgbutton.svg"; // <- tight-fit SVG file
 type SvgButtonProps = {
   onClick?: () => void;
   label?: string;
-  width?: number | string; // e.g. 400, "320px", "100%"
+  width?: number | string; // e.g. 400, '320px', '100%'
   className?: string;
   disabled?: boolean;
   title?: string; // tooltip / accessible name if no label
 };
 
-const SvgButton: React.FC<SvgButtonProps> = ({
+function SvgButton({
   onClick,
-  label = "Hello",
+  label = 'Hello',
   width = 400,
-  className = "",
+  className = '',
   disabled = false,
-  title,
-}) => {
+  title = undefined,
+}: SvgButtonProps) {
+  const [isSelected, setIsSelected] = useState(false);
+  const [blinkColor, setBlinkColor] = useState<string | null>(null);
+  const [currentColor, setCurrentColor] = useState<string>('transparent');
+
+  const handleClick = () => {
+    if (isSelected) return;
+    setIsSelected(true);
+    setCurrentColor('orange');
+    setBlinkColor(Math.random() > 0.5 ? 'green' : 'red');
+    onClick?.();
+  };
+
+  useEffect(() => {
+    if (!isSelected || !blinkColor) return undefined;
+    const interval = setInterval(() => {
+      setCurrentColor((prev) => (prev === 'orange' ? blinkColor : 'orange'));
+    }, 500);
+    return () => clearInterval(interval);
+  }, [isSelected, blinkColor]);
+
   return (
     <button
       type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={label || title || "button"}
+      onClick={handleClick}
+      disabled={disabled || isSelected}
+      aria-label={label || title || 'button'}
       title={title || label}
-      className={`relative inline-flex items-center justify-center select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-2xl ${className}`}
-      style={{ background: "transparent", border: "none", padding: 0, width }}
+      className={`group relative inline-flex items-center justify-center select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-2xl hover:shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-shadow transition-colors ${className}`}
+      style={{
+        background: currentColor,
+        border: 'none',
+        padding: 0,
+        width,
+      }}
     >
       {/* The SVG image (tight viewBox) scales to the button width while preserving aspect ratio */}
       <img
@@ -48,7 +74,7 @@ const SvgButton: React.FC<SvgButtonProps> = ({
       )}
     </button>
   );
-};
+}
 
 export default SvgButton;
 
