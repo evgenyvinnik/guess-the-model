@@ -1,10 +1,18 @@
-import logo from './assets/logo.png';
+import { Link, Route, Routes } from 'react-router-dom';
+import Home from './Home.tsx';
+import StatsPage from './StatsPage.tsx';
 
 function App() {
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#242424]">
-      <img src={logo} alt="Guess The Model logo" className="w-64" />
+    <div className="min-h-screen bg-[#242424] text-white">
+      <nav className="p-4">
+        <Link to="/" className="mr-4">Home</Link>
+        <Link to="/stats">Stats</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/stats" element={<StatsPage />} />
+      </Routes>
     </div>
   );
 }
