@@ -1,6 +1,5 @@
-
 /* eslint react/require-default-props: 0 */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import svgbutton from './assets/svgbutton.svg'; // <- tight-fit SVG file
 
 type SvgButtonProps = {
