@@ -39,12 +39,13 @@ Place your sound effects and background music in the `public/audio` directory.
 - `public/audio/sfx` – short sound effect files
 - `public/audio/bgm` – longer background music tracks
 
-These files are served statically and can be played in the app using the `playSound` helper:
+These files are served statically and can be played in the app using helpers from `audio.ts`:
 
 ```ts
-import playSound from './audio';
+import playSound, { playMusic } from './audio';
 
-playSound('/audio/sfx/click.mp3');
+playSound('/audio/sfx/click.wav');
+playMusic('/audio/bgm/theme.wav');
 ```
 
 ## Testing
