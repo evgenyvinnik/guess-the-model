@@ -32,6 +32,21 @@ Currently, two official plugins are available:
    npm run preview
    ```
 
+## Audio Assets
+
+Place your sound effects and background music in the `public/audio` directory.
+
+- `public/audio/sfx` – short sound effect files
+- `public/audio/bgm` – longer background music tracks
+
+These files are served statically and can be played in the app using the `playSound` helper:
+
+```ts
+import playSound from './audio';
+
+playSound('/audio/sfx/click.mp3');
+```
+
 ## Testing
 
 This project does not yet include an automated test suite. Run the linter to check code quality:
