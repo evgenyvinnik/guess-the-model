@@ -9,6 +9,37 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
+## Getting Started
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   The application will be served at the URL printed in the terminal (typically http://localhost:5173).
+
+3. Build for production and preview the result:
+
+   ```bash
+   npm run build
+   npm run preview
+   ```
+
+## Testing
+
+This project does not yet include an automated test suite. Run the linter to check code quality:
+
+```bash
+npm run lint
+```
+
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
