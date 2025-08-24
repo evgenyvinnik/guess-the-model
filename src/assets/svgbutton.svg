@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0.000 39.500 683.000 73.000">
+  <ns0:defs>
+    <ns0:filter id="a" width="1" height="1" x="0" y="0" style="color-interpolation-filters:sRGB">
+      <ns0:feGaussianBlur stdDeviation=".7" />
+    </ns0:filter>
+  </ns0:defs>
+  <ns0:g style="fill:none;stroke:#fbfeff;stroke-opacity:1;filter:url(#a)" transform="translate(259 615)">
+    <ns0:path d="M316-575h-468c-23 0-36 36-62 36 26 0 39 36 62 36h468c24 0 37-36 63-36-26 0-39-36-63-36zm63 36h45m-684 0h46" style="opacity:1;fill:none;fill-opacity:1;stroke:#fbfeff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:15.0047245;stroke-opacity:1" />
+  </ns0:g>
+  <ns0:path d="M316-575h-468c-23 0-36 36-62 36 26 0 39 36 62 36h468c24 0 37-36 63-36-26 0-39-36-63-36z" style="opacity:1;fill:#030375;fill-opacity:1;stroke:#9898ff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:15.0047245;stroke-opacity:1" transform="translate(259 615)" />
+  <ns0:path d="M379-539h45m-684 0h46" style="opacity:1;fill:none;fill-opacity:1;stroke:#9898ff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:15.0047245;stroke-opacity:1" transform="translate(259 615)" />
+</ns0:svg>
