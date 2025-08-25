@@ -14,6 +14,7 @@ function App() {
   const [sfxOn, setSfxOn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setMusicEnabled(musicOn);
@@ -38,7 +39,12 @@ function App() {
 
   const toggleMenu = () => {
     playSound('/audio/sfx/click.wav');
-    setMenuOpen((prev) => !prev);
+    setMenuOpen((prev) => {
+      if (prev) {
+        menuButtonRef.current?.blur();
+      }
+      return !prev;
+    });
   };
 
   useEffect(() => {
@@ -66,6 +72,7 @@ function App() {
               className="btn btn-ghost bg-[#0b1444] text-white"
               aria-label="Open menu"
               onClick={toggleMenu}
+              ref={menuButtonRef}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
