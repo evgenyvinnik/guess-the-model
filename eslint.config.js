@@ -9,7 +9,7 @@ const compat = new FlatCompat({
 });
 
 export default tseslint.config([
-  { ignores: ['dist', 'eslint.config.js'] },
+  { ignores: ['dist', 'eslint.config.js', 'tailwind.config.js'] },
   ...compat.extends('airbnb'),
   ...compat.extends('plugin:react-hooks/recommended'),
   {
