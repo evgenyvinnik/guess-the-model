@@ -1,12 +1,16 @@
-import { Link, Route, Routes } from 'react-router-dom';
+import {
+  Link, Route, Routes, useLocation,
+} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Home from './Home.tsx';
 import StatsPage from './StatsPage.tsx';
+import Game from './Game.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
 
 function App() {
   const [musicOn, setMusicOn] = useState(true);
   const [sfxOn, setSfxOn] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     playMusic('/audio/bgm/theme.wav');
@@ -76,6 +80,11 @@ function App() {
             </ul>
           </div>
         </div>
+        {['/classic', '/quiz'].includes(location.pathname) && (
+        <div className="navbar-center">
+          <Link to="/" className="millionaire-button">Home</Link>
+        </div>
+        )}
         <div className="navbar-end hidden gap-2 lg:flex">
           <button
             type="button"
@@ -96,6 +105,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/stats" element={<StatsPage />} />
+        <Route path="/classic" element={<Game mode="classic" />} />
+        <Route path="/quiz" element={<Game mode="quiz" />} />
       </Routes>
     </div>
   );

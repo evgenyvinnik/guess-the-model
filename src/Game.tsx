@@ -6,7 +6,6 @@ import MoneyLadder from './MoneyLadder.tsx';
 
 type GameProps = {
   mode: 'classic' | 'quiz';
-  onReset: () => void;
 };
 
 function getRandomQuestion() {
@@ -15,12 +14,19 @@ function getRandomQuestion() {
   return entries[index];
 }
 
-function Game({ mode, onReset }: GameProps) {
+function Game({ mode }: GameProps) {
   const totalQuestions = mode === 'classic' ? moneyLadder.length : 20;
   const [currentQuestion, setCurrentQuestion] = useState(getRandomQuestion());
   const [questionIndex, setQuestionIndex] = useState(0);
   const [correct, setCorrect] = useState(0);
   const [finished, setFinished] = useState(false);
+
+  const resetGame = () => {
+    setCurrentQuestion(getRandomQuestion());
+    setQuestionIndex(0);
+    setCorrect(0);
+    setFinished(false);
+  };
 
   const handleAnswer = (answer: ModelName) => {
     const isCorrect = answer === currentQuestion.modelName;
@@ -64,7 +70,7 @@ function Game({ mode, onReset }: GameProps) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-white">
           <p className="text-xl">{message}</p>
-          <button type="button" onClick={onReset} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
+          <button type="button" onClick={resetGame} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
         </div>
       );
     }
@@ -79,7 +85,7 @@ function Game({ mode, onReset }: GameProps) {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-white">
         <p className="text-xl">You scored {correct} out of {totalQuestions}</p>
         <p className="text-lg">Rank: {rank}</p>
-        <button type="button" onClick={onReset} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
+        <button type="button" onClick={resetGame} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
       </div>
     );
   }
