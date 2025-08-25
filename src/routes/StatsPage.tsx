@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { getStats, clearStats } from './stats.ts';
-import type { Stats } from './stats.ts';
+import { useEffect, useState, type ReactElement } from 'react';
+import { getStats, clearStats } from '../stats.ts';
+import type { Stats } from '../stats.ts';
 
-function StatsPage() {
+function StatsPage(): ReactElement {
   const [stats, setStats] = useState<Stats>(getStats());
 
   useEffect(() => {
-    const update = () => setStats(getStats());
+    const update = (): void => setStats(getStats());
     window.addEventListener('storage', update);
     return () => window.removeEventListener('storage', update);
   }, []);

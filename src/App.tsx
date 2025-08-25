@@ -3,13 +3,14 @@ import {
   useEffect,
   useRef,
   useState,
+  type ReactElement,
 } from 'react';
-import Home from './Home.tsx';
-import StatsPage from './StatsPage.tsx';
-import Game from './Game.tsx';
+import Home from './routes/Home.tsx';
+import StatsPage from './routes/StatsPage.tsx';
+import Game from './routes/Game.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
 
-function App() {
+function App(): ReactElement {
   const [musicOn, setMusicOn] = useState(false);
   const [sfxOn, setSfxOn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,17 +28,17 @@ function App() {
     setSfxEnabled(sfxOn);
   }, [sfxOn]);
 
-  const toggleMusic = () => {
+  const toggleMusic = (): void => {
     setMusicOn((prev) => !prev);
     playSound('/audio/sfx/click.wav');
   };
 
-  const toggleSfx = () => {
+  const toggleSfx = (): void => {
     playSound('/audio/sfx/click.wav');
     setSfxOn((prev) => !prev);
   };
 
-  const toggleMenu = () => {
+  const toggleMenu = (): void => {
     playSound('/audio/sfx/click.wav');
     setMenuOpen((prev) => {
       if (prev) {
@@ -48,7 +49,7 @@ function App() {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent): void => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }

@@ -1,6 +1,7 @@
-import questionImage from './assets/question.png';
+import { type ReactElement } from 'react';
+import questionImage from '../assets/question.png';
 
-function MillionaireUI() {
+function MillionaireUI(): ReactElement {
   const answers = ['Humanity', 'Health', 'Honor', 'Household'];
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-gradient-to-b from-indigo-950 to-blue-900 p-4 text-white">
