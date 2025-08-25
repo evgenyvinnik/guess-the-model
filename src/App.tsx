@@ -36,7 +36,7 @@ function App() {
           <div className="dropdown">
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-ghost bg-[#0b1444] text-white"
               aria-label="Open menu"
             >
               <svg
@@ -50,7 +50,7 @@ function App() {
               </svg>
             </button>
             <ul
-              className="menu menu-sm dropdown-content mt-3 w-52 rounded-box bg-base-300 p-2 shadow"
+              className="menu menu-sm dropdown-content mt-3 w-52 rounded-box bg-[#0b1444] p-2 shadow text-white"
             >
               <li><Link to="/">Home</Link></li>
               <li><Link to="/stats">Stats</Link></li>
