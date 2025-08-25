@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import logo from './assets/logo.png';
+import type { ReactElement } from 'react';
+import logo from '../assets/logo.png';
 
-function Home() {
+function Home(): ReactElement {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-center text-white">
       <div className="logo-animation mb-4 w-96">

@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import SvgButton from './SvgButton.tsx';
-import { questions, ModelName } from './questions.ts';
-import moneyLadder from './moneyLadder.ts';
-import MoneyLadder from './MoneyLadder.tsx';
+import { useState, type ReactElement } from 'react';
+import SvgButton from '../components/SvgButton.tsx';
+import { questions, ModelName, type QuestionEntry } from '../questions.ts';
+import moneyLadder from '../moneyLadder.ts';
+import MoneyLadder from '../components/MoneyLadder.tsx';
 
 type GameProps = {
   mode: 'classic' | 'quiz';
 };
 
-function getRandomQuestion() {
+function getRandomQuestion(): QuestionEntry {
   const entries = Object.values(questions);
   const index = Math.floor(Math.random() * entries.length);
   return entries[index];
 }
 
-function Game({ mode }: GameProps) {
+function Game({ mode }: GameProps): ReactElement {
   const totalQuestions = mode === 'classic' ? moneyLadder.length : 20;
   const [currentQuestion, setCurrentQuestion] = useState(getRandomQuestion());
   const [questionIndex, setQuestionIndex] = useState(0);

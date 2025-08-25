@@ -1,10 +1,11 @@
-import moneyLadder from './moneyLadder.ts';
+import type { ReactElement } from 'react';
+import moneyLadder from '../moneyLadder.ts';
 
 type MoneyLadderProps = {
   current: number; // zero-based index of current question
 };
 
-function MoneyLadder({ current }: MoneyLadderProps) {
+function MoneyLadder({ current }: MoneyLadderProps): ReactElement {
   const ladderDesc = [...moneyLadder].reverse();
 
   return (

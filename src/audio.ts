@@ -2,7 +2,7 @@ let musicAudio: HTMLAudioElement | null = null;
 let musicEnabled = false;
 let sfxEnabled = false;
 
-export function playMusic(src: string) {
+export function playMusic(src: string): void {
   if (musicAudio) {
     musicAudio.pause();
   }
@@ -15,7 +15,7 @@ export function playMusic(src: string) {
   }
 }
 
-export function setMusicEnabled(enabled: boolean) {
+export function setMusicEnabled(enabled: boolean): void {
   musicEnabled = enabled;
   if (musicAudio) {
     if (enabled) {
@@ -28,7 +28,7 @@ export function setMusicEnabled(enabled: boolean) {
   }
 }
 
-export function setSfxEnabled(enabled: boolean) {
+export function setSfxEnabled(enabled: boolean): void {
   sfxEnabled = enabled;
 }
 
@@ -37,7 +37,7 @@ export function setSfxEnabled(enabled: boolean) {
  * The source should reference a file located in the public/audio directory,
  * for example '/audio/sfx/click.wav'.
  */
-export default function playSound(src: string) {
+export default function playSound(src: string): void {
   if (!sfxEnabled) return;
   const audio = new Audio(src);
   audio.play().catch(() => {
