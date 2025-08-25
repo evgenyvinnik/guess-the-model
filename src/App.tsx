@@ -6,6 +6,7 @@ import {
 } from 'react';
 import Home from './Home.tsx';
 import StatsPage from './StatsPage.tsx';
+import Game from './Game.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
 
 function App() {
@@ -122,6 +123,8 @@ function App() {
       <main className="flex flex-1 overflow-auto">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/classic" element={<Game mode="classic" />} />
+          <Route path="/quiz" element={<Game mode="quiz" />} />
           <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </main>
