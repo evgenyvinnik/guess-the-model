@@ -1,24 +1,8 @@
 import { useState } from 'react';
 import SvgButton from './SvgButton.tsx';
 import { questions, ModelName } from './questions.ts';
-
-const moneyLadder = [
-  100,
-  200,
-  300,
-  500,
-  1000,
-  2000,
-  4000,
-  8000,
-  16000,
-  32000,
-  64000,
-  125000,
-  250000,
-  500000,
-  1000000,
-];
+import moneyLadder from './moneyLadder.ts';
+import MoneyLadder from './MoneyLadder.tsx';
 
 type GameProps = {
   mode: 'classic' | 'quiz';
@@ -103,16 +87,40 @@ function Game({ mode, onReset }: GameProps) {
   const options = Object.values(ModelName);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-white p-4">
-      <p className="text-lg">Question {questionIndex + 1} of {totalQuestions}</p>
-      {mode === 'classic' && (
-        <p className="text-md">Prize: ${moneyLadder[questionIndex]}</p>
-      )}
-      <p className="text-xl text-center max-w-xl">{currentQuestion.prompt}</p>
-      <div className="grid grid-cols-2 gap-4">
-        {options.map((opt) => (
-          <SvgButton key={opt} label={opt} width={340} onClick={() => handleAnswer(opt)} />
-        ))}
+    <div className="flex min-h-screen items-center justify-center p-4 text-white">
+      <div className="flex w-full max-w-5xl items-start gap-6">
+        <div className="flex flex-1 flex-col items-center gap-4">
+          <p className="text-lg">
+            Question
+            {' '}
+            {questionIndex + 1}
+            {' '}
+            of
+            {' '}
+            {totalQuestions}
+          </p>
+          {mode === 'classic' && (
+            <p className="text-md">
+              Prize:
+              {' $'}
+              {moneyLadder[questionIndex]}
+            </p>
+          )}
+          <p className="max-w-xl text-center text-xl">{currentQuestion.prompt}</p>
+          <div className="grid grid-cols-2 gap-4">
+            {options.map((opt) => (
+              <SvgButton
+                key={opt}
+                label={opt}
+                width={340}
+                onClick={() => handleAnswer(opt)}
+              />
+            ))}
+          </div>
+        </div>
+        {mode === 'classic' && (
+          <MoneyLadder current={questionIndex} />
+        )}
       </div>
     </div>
   );
