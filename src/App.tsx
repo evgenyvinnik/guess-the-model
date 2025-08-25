@@ -1,4 +1,9 @@
-import { Link, Route, Routes } from 'react-router-dom';
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
 import {
   useEffect,
   useRef,
@@ -15,6 +20,8 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const location = useLocation();
+  const showHomeButton = location.pathname === '/classic' || location.pathname === '/quiz';
 
   useEffect(() => {
     setMusicEnabled(musicOn);
@@ -62,7 +69,10 @@ function App() {
   return (
     <div className="flex h-screen flex-col overflow-hidden millionaire-background text-white">
       <nav className="navbar bg-transparent">
-        <div className="navbar-start">
+        <div className="navbar-start flex items-center gap-2">
+          {showHomeButton && (
+            <Link to="/" className="millionaire-button px-4 py-2">Home</Link>
+          )}
           <div
             ref={menuRef}
             className={`dropdown ${menuOpen ? 'dropdown-open' : ''}`}
