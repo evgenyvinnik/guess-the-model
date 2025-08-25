@@ -3,6 +3,7 @@ export const ModelName = {
   EMU: 'EMU',
   Gemini: 'Gemini',
   Grok: 'Grok',
+  Midjourney: 'Midjourney',
 } as const;
 
 export type ModelName = typeof ModelName[keyof typeof ModelName];
@@ -513,5 +514,105 @@ export const questions: Record<string, QuestionEntry> = {
     image: '9565479e-587c-4c64-a874-090f0472f96f',
     modelName: ModelName.Grok,
     prompt: 'stub',
+  },
+  '6c4746f9-7b87-4f2c-93a2-387405560be3': {
+    image: '6c4746f9-7b87-4f2c-93a2-387405560be3',
+    modelName: ModelName.Midjourney,
+    prompt: 'a futuristic city skyline at sunset in cyberpunk style',
+  },
+  'f67765a4-cba2-4c35-95ef-b9f3600508e8': {
+    image: 'f67765a4-cba2-4c35-95ef-b9f3600508e8',
+    modelName: ModelName.Midjourney,
+    prompt: 'a serene forest with bioluminescent plants and fog',
+  },
+  '2f3d4794-97c7-4de0-98b9-09b65eea318d': {
+    image: '2f3d4794-97c7-4de0-98b9-09b65eea318d',
+    modelName: ModelName.Midjourney,
+    prompt: 'a steampunk airship sailing above the clouds',
+  },
+  'a5dfdf3b-1dd3-4697-8c52-726e4bd8d184': {
+    image: 'a5dfdf3b-1dd3-4697-8c52-726e4bd8d184',
+    modelName: ModelName.Midjourney,
+    prompt: 'a majestic dragon coiled around a crystalline tower',
+  },
+  '028da635-1259-4c5f-9063-61597334765a': {
+    image: '028da635-1259-4c5f-9063-61597334765a',
+    modelName: ModelName.Midjourney,
+    prompt: 'a portrait of an astronaut wandering a desert planet',
+  },
+  'aea5538e-016c-468a-ac69-df69c7e08858': {
+    image: 'aea5538e-016c-468a-ac69-df69c7e08858',
+    modelName: ModelName.Midjourney,
+    prompt: 'a neon-lit street market on an alien world',
+  },
+  '32ff3ff6-ea17-4b58-ad20-fcdddb5f279e': {
+    image: '32ff3ff6-ea17-4b58-ad20-fcdddb5f279e',
+    modelName: ModelName.Midjourney,
+    prompt: 'a castle floating among the stars',
+  },
+  'd539777d-a11c-42fa-ba19-fbccbfecaea2': {
+    image: 'd539777d-a11c-42fa-ba19-fbccbfecaea2',
+    modelName: ModelName.Midjourney,
+    prompt: 'a cybernetic samurai standing in the rain',
+  },
+  '8fd2a51d-3caf-49e7-ad66-86289526fbca': {
+    image: '8fd2a51d-3caf-49e7-ad66-86289526fbca',
+    modelName: ModelName.Midjourney,
+    prompt: 'a whimsical cottage made of candy in a fairy forest',
+  },
+  '8bff18d2-2bd5-416a-af8a-1d1248b107aa': {
+    image: '8bff18d2-2bd5-416a-af8a-1d1248b107aa',
+    modelName: ModelName.Midjourney,
+    prompt: 'an underwater city glowing with holographic signs',
+  },
+  'a098f8b7-339e-4a52-8de9-34b770ba6dd4': {
+    image: 'a098f8b7-339e-4a52-8de9-34b770ba6dd4',
+    modelName: ModelName.Midjourney,
+    prompt: 'a giant robot defending a retro-futuristic city',
+  },
+  '7d18be0e-2b52-431a-8c0e-39de126c4556': {
+    image: '7d18be0e-2b52-431a-8c0e-39de126c4556',
+    modelName: ModelName.Midjourney,
+    prompt: 'a surreal landscape with melting clocks and floating islands',
+  },
+  'b25f134d-3b17-4c53-861f-73e7c49933c2': {
+    image: 'b25f134d-3b17-4c53-861f-73e7c49933c2',
+    modelName: ModelName.Midjourney,
+    prompt: 'a photorealistic cat wearing medieval armor',
+  },
+  '8c06aed8-9620-44ce-993d-e7d0de21aade': {
+    image: '8c06aed8-9620-44ce-993d-e7d0de21aade',
+    modelName: ModelName.Midjourney,
+    prompt: 'a pirate ship sailing through the clouds',
+  },
+  'ec53f160-6606-4709-bebf-1961e5370f8d': {
+    image: 'ec53f160-6606-4709-bebf-1961e5370f8d',
+    modelName: ModelName.Midjourney,
+    prompt: 'a vintage car parked in front of a futuristic skyscraper',
+  },
+  '3da0fde0-4cc7-4c05-84fb-96a29fa7e69e': {
+    image: '3da0fde0-4cc7-4c05-84fb-96a29fa7e69e',
+    modelName: ModelName.Midjourney,
+    prompt: 'a snowy mountain village during a lantern festival',
+  },
+  'efbd502e-8379-4160-bfb6-afaa7f854d0b': {
+    image: 'efbd502e-8379-4160-bfb6-afaa7f854d0b',
+    modelName: ModelName.Midjourney,
+    prompt: 'a mystical library guarded by spectral wolves',
+  },
+  '6ff016a5-c947-4e16-b2c6-f9a58e3f0b89': {
+    image: '6ff016a5-c947-4e16-b2c6-f9a58e3f0b89',
+    modelName: ModelName.Midjourney,
+    prompt: 'a rainforest temple reclaimed by nature',
+  },
+  '0e1e4973-fb23-4e5a-bad7-d2d2f59e2302': {
+    image: '0e1e4973-fb23-4e5a-bad7-d2d2f59e2302',
+    modelName: ModelName.Midjourney,
+    prompt: 'a robot painter creating a self-portrait',
+  },
+  'd5ec8e4b-2d12-4fdc-97a5-d8d86792ca23': {
+    image: 'd5ec8e4b-2d12-4fdc-97a5-d8d86792ca23',
+    modelName: ModelName.Midjourney,
+    prompt: 'a cosmic whale swimming through a nebula',
   },
 };
