@@ -1,5 +1,9 @@
 import { Link, Route, Routes } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Home from './Home.tsx';
 import StatsPage from './StatsPage.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
@@ -7,6 +11,8 @@ import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts
 function App() {
   const [musicOn, setMusicOn] = useState(false);
   const [sfxOn, setSfxOn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMusicEnabled(musicOn);
@@ -29,15 +35,36 @@ function App() {
     setSfxOn((prev) => !prev);
   };
 
+  const toggleMenu = () => {
+    playSound('/audio/sfx/click.wav');
+    setMenuOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen millionaire-background text-white">
       <nav className="navbar bg-transparent">
         <div className="navbar-start">
-          <div className="dropdown">
+          <div
+            ref={menuRef}
+            className={`dropdown ${menuOpen ? 'dropdown-open' : ''}`}
+          >
             <button
               type="button"
               className="btn btn-ghost bg-[#0b1444] text-white"
               aria-label="Open menu"
+              onClick={toggleMenu}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -50,10 +77,10 @@ function App() {
               </svg>
             </button>
             <ul
-              className="menu menu-sm dropdown-content mt-3 w-52 rounded-box bg-[#0b1444] p-2 shadow text-white"
+              className="millionaire-menu menu menu-sm dropdown-content mt-3 w-52 rounded-box bg-[#0b1444] p-2 text-white"
             >
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/stats">Stats</Link></li>
+              <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
+              <li><Link to="/stats" onClick={() => setMenuOpen(false)}>Stats</Link></li>
               <li className="lg:hidden">
                 <button
                   type="button"
