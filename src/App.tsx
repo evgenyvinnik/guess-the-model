@@ -37,7 +37,7 @@ function App() {
           <div className="dropdown">
             <button
               type="button"
-              className="btn btn-ghost lg:hidden"
+              className="btn btn-ghost"
               aria-label="Open menu"
             >
               <svg
@@ -56,32 +56,39 @@ function App() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/stats">Stats</Link></li>
               <li>
-                <button type="button" onClick={toggleMusic}>
+                <button
+                  type="button"
+                  onClick={toggleMusic}
+                  className="millionaire-button"
+                >
                   Music: {musicOn ? 'On' : 'Off'}
                 </button>
               </li>
               <li>
-                <button type="button" onClick={toggleSfx}>
+                <button
+                  type="button"
+                  onClick={toggleSfx}
+                  className="millionaire-button"
+                >
                   SFX: {sfxOn ? 'On' : 'Off'}
                 </button>
               </li>
             </ul>
           </div>
-          <Link to="/" className="btn btn-ghost normal-case text-xl">
-            Guess the Model
-          </Link>
-        </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/stats">Stats</Link></li>
-          </ul>
         </div>
         <div className="navbar-end hidden gap-2 lg:flex">
-          <button type="button" onClick={toggleMusic} className="btn btn-sm">
+          <button
+            type="button"
+            onClick={toggleMusic}
+            className="millionaire-button"
+          >
             Music: {musicOn ? 'On' : 'Off'}
           </button>
-          <button type="button" onClick={toggleSfx} className="btn btn-sm">
+          <button
+            type="button"
+            onClick={toggleSfx}
+            className="millionaire-button"
+          >
             SFX: {sfxOn ? 'On' : 'Off'}
           </button>
         </div>
