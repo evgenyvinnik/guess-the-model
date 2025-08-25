@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* Radial gradient background inspired by the show's color scheme */
+  .millionaire-background {
+    background: radial-gradient(
+      circle at center,
+      #1a237e 0%,
+      #0b1444 70%,
+      #000000 100%
+    );
+  }
+
+  /* Button style matching the game's blue and gold theme */
+  .millionaire-button {
+    @apply rounded-full px-8 py-3 text-white;
+    background: linear-gradient(to bottom, #0a2472, #020d3b);
+    border: 2px solid #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+  }
+
+  .millionaire-button:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 0 10px #fbbf24;
+  }
+}

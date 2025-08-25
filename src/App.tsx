@@ -31,8 +31,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#242424] text-white">
-      <nav className="navbar bg-base-300">
+    <div className="min-h-screen millionaire-background text-white">
+      <nav className="navbar bg-transparent">
         <div className="navbar-start">
           <div className="dropdown">
             <button

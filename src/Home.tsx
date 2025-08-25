@@ -10,18 +10,18 @@ function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-      <h1 className="text-2xl mb-4">Choose a mode</h1>
+      <h1 className="mb-4 text-2xl">Choose a mode</h1>
       <button
         type="button"
         onClick={() => setMode('classic')}
-        className="rounded bg-blue-600 px-4 py-2"
+        className="millionaire-button"
       >
         Classic
       </button>
       <button
         type="button"
         onClick={() => setMode('quiz')}
-        className="rounded bg-green-600 px-4 py-2"
+        className="millionaire-button"
       >
         Quiz
       </button>
