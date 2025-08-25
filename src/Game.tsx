@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import SvgButton from './SvgButton.tsx';
 import { questions, ModelName } from './questions.ts';
 import moneyLadder from './moneyLadder.ts';
@@ -70,7 +69,6 @@ function Game({ mode }: GameProps) {
         : `Game over! You won $${prize}`;
       return (
         <div className="relative flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-          <Link to="/" className="millionaire-button absolute left-4 top-4 px-4 py-2">Home</Link>
           <p className="text-xl">{message}</p>
           <button type="button" onClick={resetGame} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
         </div>
@@ -85,7 +83,6 @@ function Game({ mode }: GameProps) {
     })();
     return (
       <div className="relative flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-        <Link to="/" className="millionaire-button absolute left-4 top-4 px-4 py-2">Home</Link>
         <p className="text-xl">You scored {correct} out of {totalQuestions}</p>
         <p className="text-lg">Rank: {rank}</p>
         <button type="button" onClick={resetGame} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
@@ -97,7 +94,6 @@ function Game({ mode }: GameProps) {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center p-4 text-white">
-      <Link to="/" className="millionaire-button absolute left-4 top-4 px-4 py-2">Home</Link>
       <div className="flex w-full max-w-5xl items-start gap-6">
         <div className="flex flex-1 flex-col items-center gap-4">
           <p className="text-lg">
