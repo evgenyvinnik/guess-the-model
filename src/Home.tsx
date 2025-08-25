@@ -11,22 +11,23 @@ function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-      <img src={logo} alt="Logo" className="mb-4 w-32" />
-      <h1 className="mb-4 text-2xl">Choose a mode</h1>
-      <button
-        type="button"
-        onClick={() => setMode('classic')}
-        className="millionaire-button"
-      >
-        Classic
-      </button>
-      <button
-        type="button"
-        onClick={() => setMode('quiz')}
-        className="millionaire-button"
-      >
-        Quiz
-      </button>
+      <img src={logo} alt="Logo" className="mb-4 w-96" />
+      <div className="flex gap-4">
+        <button
+          type="button"
+          onClick={() => setMode('classic')}
+          className="millionaire-button"
+        >
+          Classic
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode('quiz')}
+          className="millionaire-button"
+        >
+          Quiz
+        </button>
+      </div>
     </div>
   );
 }
