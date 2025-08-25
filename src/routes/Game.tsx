@@ -1,5 +1,4 @@
 import { useState, type ReactElement } from 'react';
-import SvgButton from '../components/SvgButton.tsx';
 import { questions, ModelName, type QuestionEntry } from '../questions.ts';
 import moneyLadder from '../moneyLadder.ts';
 import MoneyLadder from '../components/MoneyLadder.tsx';
@@ -16,13 +15,25 @@ function getRandomQuestion(): QuestionEntry {
 
 function Game({ mode }: GameProps): ReactElement {
   const totalQuestions = mode === 'classic' ? moneyLadder.length : 20;
-  const [currentQuestion, setCurrentQuestion] = useState(getRandomQuestion());
+  const getQuestionWithOptions = () => {
+    const question = getRandomQuestion();
+    const allModels = Object.values(ModelName);
+    const otherModels = allModels.filter((m) => m !== question.modelName);
+    const shuffled = [...otherModels]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+    const options = [...shuffled, question.modelName].sort(
+      () => Math.random() - 0.5,
+    );
+    return { question, options };
+  };
+  const [{ question: currentQuestion, options }, setQA] = useState(getQuestionWithOptions);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [correct, setCorrect] = useState(0);
   const [finished, setFinished] = useState(false);
 
   const resetGame = () => {
-    setCurrentQuestion(getRandomQuestion());
+    setQA(getQuestionWithOptions());
     setQuestionIndex(0);
     setCorrect(0);
     setFinished(false);
@@ -53,7 +64,7 @@ function Game({ mode }: GameProps): ReactElement {
     }
 
     setQuestionIndex(nextIndex);
-    setCurrentQuestion(getRandomQuestion());
+    setQA(getQuestionWithOptions());
   };
 
   if (finished) {
@@ -90,8 +101,6 @@ function Game({ mode }: GameProps): ReactElement {
     );
   }
 
-  const options = Object.values(ModelName);
-
   return (
     <div className="relative flex min-h-screen items-center justify-center p-4 text-white">
       <div className="flex w-full max-w-5xl items-start gap-6">
@@ -115,12 +124,14 @@ function Game({ mode }: GameProps): ReactElement {
           <p className="max-w-xl text-center text-xl">{currentQuestion.prompt}</p>
           <div className="grid grid-cols-2 gap-4">
             {options.map((opt) => (
-              <SvgButton
+              <button
                 key={opt}
-                label={opt}
-                width={340}
+                type="button"
                 onClick={() => handleAnswer(opt)}
-              />
+                className="millionaire-button px-6 py-2"
+              >
+                {opt}
+              </button>
             ))}
           </div>
         </div>
