@@ -30,7 +30,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen millionaire-background text-white">
+    <div className="flex min-h-screen flex-col millionaire-background text-white">
       <nav className="navbar bg-transparent">
         <div className="navbar-start">
           <div className="dropdown">
@@ -92,10 +92,12 @@ function App() {
           SFX: {sfxOn ? 'On' : 'Off'}
         </button>
       </div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/stats" element={<StatsPage />} />
-      </Routes>
+      <main className="flex flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/stats" element={<StatsPage />} />
+        </Routes>
+      </main>
     </div>
   );
 }

@@ -10,8 +10,8 @@ function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-      <img src={logo} alt="Logo" className="mb-4 w-96" />
+    <div className="flex flex-1 flex-col items-center justify-center gap-4 text-white">
+      <img src={logo} alt="Logo" className="mb-4 w-96 max-w-full" />
       <div className="flex gap-4">
         <button
           type="button"
