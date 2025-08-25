@@ -8,13 +8,14 @@ import {
   useEffect,
   useRef,
   useState,
+  type ReactElement,
 } from 'react';
-import Home from './Home.tsx';
-import StatsPage from './StatsPage.tsx';
-import Game from './Game.tsx';
+import Home from './routes/Home.tsx';
+import StatsPage from './routes/StatsPage.tsx';
+import Game from './routes/Game.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
 
-function App() {
+function App(): ReactElement {
   const [musicOn, setMusicOn] = useState(false);
   const [sfxOn, setSfxOn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -70,16 +71,13 @@ function App() {
     <div className="flex h-screen flex-col overflow-hidden millionaire-background text-white">
       <nav className="navbar bg-transparent">
         <div className="navbar-start flex items-center gap-2">
-          {showHomeButton && (
-            <Link to="/" className="millionaire-button px-4 py-2">Home</Link>
-          )}
           <div
             ref={menuRef}
             className={`dropdown ${menuOpen ? 'dropdown-open' : ''}`}
           >
             <button
               type="button"
-              className="btn btn-ghost bg-[#0b1444] text-white"
+              className="millionaire-button flex items-center justify-center px-4 py-2"
               aria-label="Open menu"
               onClick={toggleMenu}
               ref={menuButtonRef}
@@ -119,6 +117,9 @@ function App() {
               </li>
             </ul>
           </div>
+          {showHomeButton && (
+            <Link to="/" className="millionaire-button px-4 py-2">Home</Link>
+          )}
         </div>
       </nav>
       <div className="fixed bottom-4 right-4 hidden flex-col gap-2 lg:flex">

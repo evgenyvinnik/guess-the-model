@@ -1,6 +1,6 @@
 /* eslint react/require-default-props: 0 */
-import { useEffect, useState } from 'react';
-import svgbutton from './assets/svgbutton.svg'; // <- tight-fit SVG file
+import { useEffect, useState, type ReactElement } from 'react';
+import svgbutton from '../assets/svgbutton.svg'; // <- tight-fit SVG file
 
 type SvgButtonProps = {
   onClick?: () => void;
@@ -18,7 +18,7 @@ function SvgButton({
   className = '',
   disabled = false,
   title = undefined,
-}: SvgButtonProps) {
+}: SvgButtonProps): ReactElement {
   const [isSelected, setIsSelected] = useState(false);
   const [blinkColor, setBlinkColor] = useState<string | null>(null);
   const [currentColor, setCurrentColor] = useState<string>('transparent');
