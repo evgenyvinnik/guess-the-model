@@ -30,7 +30,7 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col millionaire-background text-white">
+    <div className="flex h-screen flex-col overflow-hidden millionaire-background text-white">
       <nav className="navbar bg-transparent">
         <div className="navbar-start">
           <div className="dropdown">
@@ -92,7 +92,7 @@ function App() {
           SFX: {sfxOn ? 'On' : 'Off'}
         </button>
       </div>
-      <main className="flex flex-1">
+      <main className="flex flex-1 overflow-auto">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/stats" element={<StatsPage />} />
