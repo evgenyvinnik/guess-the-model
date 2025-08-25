@@ -1,6 +1,6 @@
 let musicAudio: HTMLAudioElement | null = null;
-let musicEnabled = true;
-let sfxEnabled = true;
+let musicEnabled = false;
+let sfxEnabled = false;
 
 export function playMusic(src: string) {
   if (musicAudio) {

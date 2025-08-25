@@ -5,15 +5,14 @@ import StatsPage from './StatsPage.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
 
 function App() {
-  const [musicOn, setMusicOn] = useState(true);
-  const [sfxOn, setSfxOn] = useState(true);
-
-  useEffect(() => {
-    playMusic('/audio/bgm/theme.wav');
-  }, []);
+  const [musicOn, setMusicOn] = useState(false);
+  const [sfxOn, setSfxOn] = useState(false);
 
   useEffect(() => {
     setMusicEnabled(musicOn);
+    if (musicOn) {
+      playMusic('/audio/bgm/theme.wav');
+    }
   }, [musicOn]);
 
   useEffect(() => {
@@ -55,20 +54,20 @@ function App() {
             >
               <li><Link to="/">Home</Link></li>
               <li><Link to="/stats">Stats</Link></li>
-              <li>
+              <li className="lg:hidden">
                 <button
                   type="button"
                   onClick={toggleMusic}
-                  className="millionaire-button"
+                  className="millionaire-button px-6 py-2 text-sm"
                 >
                   Music: {musicOn ? 'On' : 'Off'}
                 </button>
               </li>
-              <li>
+              <li className="lg:hidden">
                 <button
                   type="button"
                   onClick={toggleSfx}
-                  className="millionaire-button"
+                  className="millionaire-button px-6 py-2 text-sm"
                 >
                   SFX: {sfxOn ? 'On' : 'Off'}
                 </button>
@@ -76,23 +75,23 @@ function App() {
             </ul>
           </div>
         </div>
-        <div className="navbar-end hidden gap-2 lg:flex">
-          <button
-            type="button"
-            onClick={toggleMusic}
-            className="millionaire-button"
-          >
-            Music: {musicOn ? 'On' : 'Off'}
-          </button>
-          <button
-            type="button"
-            onClick={toggleSfx}
-            className="millionaire-button"
-          >
-            SFX: {sfxOn ? 'On' : 'Off'}
-          </button>
-        </div>
       </nav>
+      <div className="fixed bottom-4 right-4 hidden flex-col gap-2 lg:flex">
+        <button
+          type="button"
+          onClick={toggleMusic}
+          className="millionaire-button px-6 py-2 text-sm"
+        >
+          Music: {musicOn ? 'On' : 'Off'}
+        </button>
+        <button
+          type="button"
+          onClick={toggleSfx}
+          className="millionaire-button px-6 py-2 text-sm"
+        >
+          SFX: {sfxOn ? 'On' : 'Off'}
+        </button>
+      </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/stats" element={<StatsPage />} />
