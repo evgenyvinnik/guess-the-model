@@ -7,7 +7,6 @@ import { recordGuess } from '../stats.ts';
 import ClassicFinalScreen from '../components/ClassicFinalScreen.tsx';
 import QuizFinalScreen from '../components/QuizFinalScreen.tsx';
 
-
 type GameProps = {
   mode: 'classic' | 'quiz';
 };
