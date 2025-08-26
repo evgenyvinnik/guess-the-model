@@ -49,7 +49,7 @@
   .logo-animation::before {
     content: '';
     inset: -20%;
-    background: radial-gradient(circle at center, rgba(76, 29, 149, 0.8), transparent 70%);
+    background: radial-gradient(circle at center, rgba(220, 216, 227, 0.8), transparent 70%);
     filter: blur(20px);
     animation: flame 2.5s ease-in-out infinite;
     z-index: -1;
@@ -58,7 +58,7 @@
   .logo-animation::after {
     content: '';
     inset: -40%;
-    background: radial-gradient(circle at center, rgba(76, 29, 149, 0.4), transparent 80%);
+    background: radial-gradient(circle at center, rgba(213, 68, 68, 0.707), transparent 80%);
     filter: blur(40px);
     animation: pulse 4s ease-in-out infinite;
     z-index: -2;
