@@ -19,6 +19,18 @@ function StatsPage(): ReactElement {
         <p>Correct: {stats.correct}</p>
         <p>Incorrect: {stats.incorrect}</p>
       </div>
+      <div className="mb-4">
+        <h2 className="mb-2 text-xl">Classic Mode</h2>
+        <p>Total guesses: {stats.classic.total}</p>
+        <p>Correct: {stats.classic.correct}</p>
+        <p>Incorrect: {stats.classic.incorrect}</p>
+      </div>
+      <div className="mb-4">
+        <h2 className="mb-2 text-xl">Quiz Mode</h2>
+        <p>Total guesses: {stats.quiz.total}</p>
+        <p>Correct: {stats.quiz.correct}</p>
+        <p>Incorrect: {stats.quiz.incorrect}</p>
+      </div>
       <h2 className="mb-2 text-xl">By Model</h2>
       <ul className="mb-4">
         {Object.entries(stats.models).map(([model, s]) => (
