@@ -50,7 +50,21 @@ playMusic('/audio/bgm/theme.wav');
 
 ## Testing
 
-This project does not yet include an automated test suite. Run the linter to check code quality:
+This project uses [Cypress](https://www.cypress.io/) for end‑to‑end testing.
+
+Run the full test suite, starting a dev server automatically:
+
+```bash
+npm run test:e2e
+```
+
+If a development server is already running, execute the tests directly:
+
+```bash
+npm run cy:run
+```
+
+For code quality checks, run the linter:
 
 ```bash
 npm run lint
