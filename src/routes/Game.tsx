@@ -2,6 +2,7 @@ import { useState, type ReactElement } from 'react';
 import { questions, ModelName, type QuestionEntry } from '../questions.ts';
 import moneyLadder from '../moneyLadder.ts';
 import MoneyLadder from '../components/MoneyLadder.tsx';
+import { recordGuess } from '../stats.ts';
 
 type GameProps = {
   mode: 'classic' | 'quiz';
@@ -41,6 +42,7 @@ function Game({ mode }: GameProps): ReactElement {
 
   const handleAnswer = (answer: ModelName) => {
     const isCorrect = answer === currentQuestion.modelName;
+    recordGuess(currentQuestion.modelName, isCorrect, mode);
     if (isCorrect) {
       setCorrect((prev) => prev + 1);
     }
