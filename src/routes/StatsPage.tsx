@@ -1,9 +1,33 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import {
+  useEffect,
+  useState,
+  useMemo,
+  type ReactElement,
+} from 'react';
 import { getStats, clearStats } from '../stats.ts';
 import type { Stats } from '../stats.ts';
+import {
+  questions,
+  ModelName,
+  type QuestionEntry,
+} from '../questions.ts';
 
 function StatsPage(): ReactElement {
   const [stats, setStats] = useState<Stats>(getStats());
+
+  const imagesByModel = useMemo(() => {
+    const grouped: Record<ModelName, string[]> = {
+      [ModelName.ChatGPT]: [],
+      [ModelName.EMU]: [],
+      [ModelName.Gemini]: [],
+      [ModelName.Grok]: [],
+      [ModelName.Midjourney]: [],
+    };
+    Object.values(questions).forEach((q: QuestionEntry) => {
+      grouped[q.modelName].push(q.image);
+    });
+    return grouped;
+  }, []);
 
   useEffect(() => {
     const update = () => setStats(getStats());
@@ -32,13 +56,35 @@ function StatsPage(): ReactElement {
         <p>Incorrect: {stats.quiz.incorrect}</p>
       </div>
       <h2 className="mb-2 text-xl">By Model</h2>
-      <ul className="mb-4">
-        {Object.entries(stats.models).map(([model, s]) => (
-          <li key={model} className="mb-2">
-            <span className="font-bold">{model}:</span> {s.correct} correct / {s.incorrect} incorrect (total {s.total})
-          </li>
-        ))}
-      </ul>
+      {Object.entries(imagesByModel).map(([model, images]) => (
+        <div key={model} className="mb-6">
+          <p className="mb-2 font-bold">
+            {model}: {stats.models[model]?.correct ?? 0} correct /
+            {' '}
+            {stats.models[model]?.incorrect ?? 0} incorrect
+          </p>
+          <div className="grid grid-cols-5 gap-2">
+            {images.map((id) => {
+              const guessed = stats.models[model]?.correctImages?.includes(id);
+              return guessed ? (
+                <img
+                  key={id}
+                  src={`/images/${model}/${id}.png`}
+                  alt={id}
+                  className="h-20 w-20 object-cover"
+                />
+              ) : (
+                <div
+                  key={id}
+                  className="flex h-20 w-20 items-center justify-center bg-gray-700 text-xl"
+                >
+                  ?
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
       <button
         type="button"
         onClick={() => { clearStats(); setStats(getStats()); }}

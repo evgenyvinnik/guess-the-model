@@ -46,7 +46,8 @@ function Game({ mode }: GameProps): ReactElement {
 
   const handleAnswer = (answer: ModelName) => {
     const isCorrect = answer === currentQuestion.modelName;
-    recordGuess(currentQuestion.modelName, isCorrect, mode);
+    recordGuess(currentQuestion.modelName, isCorrect, currentQuestion.image, mode);
+
     if (isCorrect) {
       setCorrect((prev) => prev + 1);
     }
