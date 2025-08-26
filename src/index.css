@@ -38,6 +38,11 @@
 
   .logo-animation {
     @apply relative flex items-center justify-center;
+    z-index: 0;
+  }
+
+  .logo-animation img {
+    @apply relative z-10;
   }
 
   .logo-animation::before {
