@@ -36,24 +36,38 @@ function StatsPage(): ReactElement {
   }, []);
 
   return (
-    <div className="p-4 text-white">
-      <h1 className="mb-4 text-2xl">Statistics</h1>
-      <div className="mb-4">
-        <p>Total guesses: {stats.total}</p>
-        <p>Correct: {stats.correct}</p>
-        <p>Incorrect: {stats.incorrect}</p>
+    <div className="mx-auto flex max-w-3xl flex-col items-center p-4 text-center text-white">
+      <h1 className="mb-8 text-4xl">Statistics</h1>
+      <div className="mb-8 text-2xl">
+        <p>
+          Total guesses:
+          {' '}
+          <span className="font-bold">{stats.total}</span>
+        </p>
+        <p>
+          Correct:
+          {' '}
+          <span className="font-bold text-green-400">{stats.correct}</span>
+        </p>
+        <p>
+          Incorrect:
+          {' '}
+          <span className="font-bold text-red-400">{stats.incorrect}</span>
+        </p>
       </div>
-      <div className="mb-4">
-        <h2 className="mb-2 text-xl">Classic Mode</h2>
-        <p>Total guesses: {stats.classic.total}</p>
-        <p>Correct: {stats.classic.correct}</p>
-        <p>Incorrect: {stats.classic.incorrect}</p>
-      </div>
-      <div className="mb-4">
-        <h2 className="mb-2 text-xl">Quiz Mode</h2>
-        <p>Total guesses: {stats.quiz.total}</p>
-        <p>Correct: {stats.quiz.correct}</p>
-        <p>Incorrect: {stats.quiz.incorrect}</p>
+      <div className="mb-8 flex w-full flex-col gap-8 md:flex-row">
+        <div className="flex-1">
+          <h2 className="mb-2 text-2xl">Classic Mode</h2>
+          <p>Total guesses: {stats.classic.total}</p>
+          <p>Correct: {stats.classic.correct}</p>
+          <p>Incorrect: {stats.classic.incorrect}</p>
+        </div>
+        <div className="flex-1">
+          <h2 className="mb-2 text-2xl">Quiz Mode</h2>
+          <p>Total guesses: {stats.quiz.total}</p>
+          <p>Correct: {stats.quiz.correct}</p>
+          <p>Incorrect: {stats.quiz.incorrect}</p>
+        </div>
       </div>
       <h2 className="mb-2 text-xl">By Model</h2>
       {Object.entries(imagesByModel).map(([model, images]) => (

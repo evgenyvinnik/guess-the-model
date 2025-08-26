@@ -15,38 +15,28 @@
 
   /* Button style matching the game's blue and gold theme */
   .millionaire-button {
-    @apply rounded-full px-8 py-3 text-white;
+    @apply rounded-full px-8 py-3 text-white border-2 border-sky-400 shadow-[0_0_10px_#38bdf8] transition-colors duration-300;
     background: linear-gradient(to bottom, #0a2472, #020d3b);
-    border: 2px solid #38bdf8;
-    box-shadow: 0 0 10px #38bdf8;
   }
 
   .millionaire-button:hover {
-    border-color: #fbbf24;
-    box-shadow: 0 0 10px #fbbf24;
+    @apply border-amber-400 shadow-[0_0_10px_#fbbf24];
   }
 
   .millionaire-menu {
-    border: 2px solid #38bdf8;
-    box-shadow: 0 0 10px #38bdf8;
+    @apply border-2 border-sky-400 shadow-[0_0_10px_#38bdf8];
   }
 
   .millionaire-menu:hover {
-    border-color: #fbbf24;
-    box-shadow: 0 0 10px #fbbf24;
+    @apply border-amber-400 shadow-[0_0_10px_#fbbf24];
   }
 
   .logo-animation {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 0;
+    @apply relative flex items-center justify-center z-0;
   }
 
   .logo-animation img {
-    position: relative;
-    z-index: 10;
+    @apply relative z-10;
   }
 
   .logo-animation::before {
