@@ -4,6 +4,10 @@ import moneyLadder from '../moneyLadder.ts';
 import MoneyLadder from '../components/MoneyLadder.tsx';
 import { recordGuess } from '../stats.ts';
 
+import ClassicFinalScreen from '../components/ClassicFinalScreen.tsx';
+import QuizFinalScreen from '../components/QuizFinalScreen.tsx';
+
+
 type GameProps = {
   mode: 'classic' | 'quiz';
 };
@@ -42,7 +46,8 @@ function Game({ mode }: GameProps): ReactElement {
 
   const handleAnswer = (answer: ModelName) => {
     const isCorrect = answer === currentQuestion.modelName;
-    recordGuess(currentQuestion.modelName, isCorrect, currentQuestion.image);
+    recordGuess(currentQuestion.modelName, isCorrect, currentQuestion.image, mode);
+
     if (isCorrect) {
       setCorrect((prev) => prev + 1);
     }
@@ -71,35 +76,16 @@ function Game({ mode }: GameProps): ReactElement {
 
   if (finished) {
     if (mode === 'classic') {
-      let prize = 0;
-      if (correct === moneyLadder.length) {
-        prize = moneyLadder[moneyLadder.length - 1];
-      } else if (correct > 0) {
-        prize = moneyLadder[correct - 1];
-      }
-      const message = correct === moneyLadder.length
-        ? 'Congratulations! You won a million!'
-        : `Game over! You won $${prize}`;
       return (
-        <div className="relative flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-          <p className="text-xl">{message}</p>
-          <button type="button" onClick={resetGame} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
-        </div>
+        <ClassicFinalScreen correct={correct} onRestart={resetGame} />
       );
     }
-    const rank = (() => {
-      if (correct === 20) return 'eagle eye';
-      if (correct >= 15) return 'AI connoisseur';
-      if (correct >= 10) return 'Ah, I have heard about that aye thing!';
-      if (correct < 5) return 'I swear this looks real!';
-      return 'Keep practicing!';
-    })();
     return (
-      <div className="relative flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-        <p className="text-xl">You scored {correct} out of {totalQuestions}</p>
-        <p className="text-lg">Rank: {rank}</p>
-        <button type="button" onClick={resetGame} className="rounded bg-blue-600 px-4 py-2">Play Again</button>
-      </div>
+      <QuizFinalScreen
+        correct={correct}
+        total={totalQuestions}
+        onRestart={resetGame}
+      />
     );
   }
 
