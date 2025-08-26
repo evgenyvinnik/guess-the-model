@@ -37,12 +37,16 @@
   }
 
   .logo-animation {
-    @apply relative flex items-center justify-center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 0;
   }
 
   .logo-animation img {
-    @apply relative z-10;
+    position: relative;
+    z-index: 10;
   }
 
   .logo-animation::before {

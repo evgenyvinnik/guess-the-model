@@ -51,7 +51,7 @@ export function getStats(): Stats {
   }
 }
 
-export function recordGuess(model: string, isCorrect: boolean,, imageId: string, mode: 'classic' | 'quiz'): void {
+export function recordGuess(model: string, isCorrect: boolean, imageId: string, mode: 'classic' | 'quiz'): void {
   const stats = getStats();
   if (!stats.models[model]) {
     stats.models[model] = {
