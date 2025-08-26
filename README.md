@@ -32,6 +32,10 @@ Currently, two official plugins are available:
    npm run preview
    ```
 
+## GitHub Pages Deployment
+
+This project can be deployed to GitHub Pages using the provided workflow at `.github/workflows/pages.yml`. The built site will be available at `https://<your-github-username>.github.io/guess-the-model/` once the workflow runs.
+
 ## Audio Assets
 
 Place your sound effects and background music in the `public/audio` directory.
