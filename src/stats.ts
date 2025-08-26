@@ -2,6 +2,7 @@ export interface ModelStats {
   correct: number;
   incorrect: number;
   total: number;
+  correctImages: string[];
 }
 
 export interface Stats {
@@ -32,15 +33,26 @@ export function getStats(): Stats {
   }
 }
 
-export function recordGuess(model: string, isCorrect: boolean): void {
+export function recordGuess(model: string, isCorrect: boolean, imageId: string): void {
   const stats = getStats();
   if (!stats.models[model]) {
-    stats.models[model] = { correct: 0, incorrect: 0, total: 0 };
+    stats.models[model] = {
+      correct: 0,
+      incorrect: 0,
+      total: 0,
+      correctImages: [],
+    };
   }
   const modelStats = stats.models[model];
+  if (!modelStats.correctImages) {
+    modelStats.correctImages = [];
+  }
   if (isCorrect) {
     stats.correct += 1;
     modelStats.correct += 1;
+    if (!modelStats.correctImages.includes(imageId)) {
+      modelStats.correctImages.push(imageId);
+    }
   } else {
     stats.incorrect += 1;
     modelStats.incorrect += 1;
