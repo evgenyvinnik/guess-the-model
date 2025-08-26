@@ -90,42 +90,42 @@ function Game({ mode }: GameProps): ReactElement {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center p-4 text-white">
-      <div className="flex w-full max-w-5xl items-start gap-6">
-        <div className="flex flex-1 flex-col items-center gap-4">
-          <p className="text-lg">
-            Question
-            {' '}
-            {questionIndex + 1}
-            {' '}
-            of
-            {' '}
-            {totalQuestions}
-          </p>
-          {mode === 'classic' && (
-            <p className="text-md">
-              Prize:
-              {' $'}
-              {moneyLadder[questionIndex]}
-            </p>
-          )}
-          <p className="max-w-xl text-center text-xl">{currentQuestion.prompt}</p>
-          <div className="grid grid-cols-2 gap-4">
-            {options.map((opt) => (
-              <button
-                key={opt}
-                type="button"
-                onClick={() => handleAnswer(opt)}
-                className="millionaire-button px-6 py-2"
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
+      <div className="flex w-full max-w-2xl flex-col items-center gap-4">
+        <p className="text-lg">
+          Question
+          {' '}
+          {questionIndex + 1}
+          {' '}
+          of
+          {' '}
+          {totalQuestions}
+        </p>
         {mode === 'classic' && (
-          <MoneyLadder current={questionIndex} />
+          <p className="text-md">
+            Prize:
+            {' $'}
+            {moneyLadder[questionIndex]}
+          </p>
         )}
+        <p className="max-w-xl text-center text-xl">{currentQuestion.prompt}</p>
+        <div className="grid grid-cols-2 gap-4">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => handleAnswer(opt)}
+              className="millionaire-button px-6 py-2"
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
       </div>
+      {mode === 'classic' && (
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <MoneyLadder current={questionIndex} />
+        </div>
+      )}
     </div>
   );
 }
