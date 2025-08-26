@@ -32,19 +32,23 @@
   }
 
   .logo-animation {
-    @apply relative flex items-center justify-center z-0;
+    @apply relative flex items-center justify-center z-0 isolate;
   }
 
   .logo-animation img {
     @apply relative z-10;
   }
 
+  .logo-animation::before,
+  .logo-animation::after {
+    pointer-events: none;
+    position: absolute;
+    border-radius: 50%;
+  }
+
   .logo-animation::before {
     content: '';
-    position: absolute;
-    width: 140%;
-    height: 140%;
-    border-radius: 50%;
+    inset: -20%;
     background: radial-gradient(circle at center, rgba(76, 29, 149, 0.8), transparent 70%);
     filter: blur(20px);
     animation: flame 2.5s ease-in-out infinite;
@@ -53,10 +57,7 @@
 
   .logo-animation::after {
     content: '';
-    position: absolute;
-    width: 180%;
-    height: 180%;
-    border-radius: 50%;
+    inset: -40%;
     background: radial-gradient(circle at center, rgba(76, 29, 149, 0.4), transparent 80%);
     filter: blur(40px);
     animation: pulse 4s ease-in-out infinite;

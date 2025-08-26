@@ -8,7 +8,7 @@ function Home(): ReactElement {
       <div className="logo-animation mb-4 w-96">
         <img src={logo} alt="Logo" className="w-full" />
       </div>
-      <div className="flex justify-center gap-4">
+      <div className="relative z-10 flex justify-center gap-4">
         <Link to="/classic" className="millionaire-button">
           Classic
         </Link>
