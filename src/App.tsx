@@ -13,6 +13,7 @@ import {
 import Home from './routes/Home.tsx';
 import StatsPage from './routes/StatsPage.tsx';
 import Game from './routes/Game.tsx';
+import About from './routes/About.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
 
 function App(): ReactElement {
@@ -97,6 +98,7 @@ function App(): ReactElement {
             >
               <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
               <li><Link to="/stats" onClick={() => setMenuOpen(false)}>Stats</Link></li>
+              <li><Link to="/about" onClick={() => setMenuOpen(false)}>About</Link></li>
               <li className="lg:hidden">
                 <button
                   type="button"
@@ -144,6 +146,7 @@ function App(): ReactElement {
           <Route path="/classic" element={<Game mode="classic" />} />
           <Route path="/quiz" element={<Game mode="quiz" />} />
           <Route path="/stats" element={<StatsPage />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
     </div>
