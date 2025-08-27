@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
-import type { ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
+import { isbot } from 'isbot';
 import logo from '../assets/logo.png';
 
 function Home(): ReactElement {
+  const [isCrawler, setIsCrawler] = useState(false);
+
+  useEffect(() => {
+    setIsCrawler(isbot(navigator.userAgent));
+  }, []);
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-center text-white">
       <div className="logo-animation mb-4 w-96">
@@ -15,6 +22,16 @@ function Home(): ReactElement {
         <Link to="/quiz" className="millionaire-button">
           Quiz
         </Link>
+      </div>
+      <div className="mt-12 w-full max-w-prose px-4">
+        <details open={isCrawler}>
+          <summary className="cursor-pointer text-lg font-bold">About</summary>
+          <p className="mt-2 text-sm">
+            Guess the Model is an interactive quiz where players try to identify
+            which AI model produced a given answer. Test your intuition and learn
+            how different models respond to the same questions.
+          </p>
+        </details>
       </div>
     </div>
   );

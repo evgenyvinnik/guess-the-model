@@ -13,6 +13,7 @@ import {
 import Home from './routes/Home.tsx';
 import StatsPage from './routes/StatsPage.tsx';
 import Game from './routes/Game.tsx';
+import Footer from './components/Footer.tsx';
 import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
 
 function App(): ReactElement {
@@ -146,6 +147,12 @@ function App(): ReactElement {
           <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </main>
+      <Footer
+        musicOn={musicOn}
+        sfxOn={sfxOn}
+        toggleMusic={toggleMusic}
+        toggleSfx={toggleSfx}
+      />
     </div>
   );
 }
