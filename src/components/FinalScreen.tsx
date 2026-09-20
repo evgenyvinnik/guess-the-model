@@ -19,21 +19,28 @@ function useWindowSize() {
 }
 
 type FinalScreenProps = {
+  celebrate?: boolean;
   children: ReactNode;
 };
 
-function FinalScreen({ children }: FinalScreenProps): ReactElement {
+function FinalScreen({ celebrate = true, children }: FinalScreenProps): ReactElement {
   const { width, height } = useWindowSize();
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center gap-4 text-white">
-      <Confetti
-        width={width}
-        height={height}
-        recycle={false}
-        className="pointer-events-none"
-      />
-      {children}
+    <div className="relative flex w-full flex-col items-center justify-center gap-6 p-6 text-white">
+      {celebrate && (
+        <Confetti
+          width={width}
+          height={height}
+          recycle={false}
+          className="pointer-events-none"
+          // Pinned to the viewport so the canvas never adds scrollbars.
+          style={{ position: 'fixed', inset: 0, zIndex: 1 }}
+        />
+      )}
+      <div className="mil-enter mil-panel z-10 flex w-full max-w-xl flex-col items-center gap-5 rounded-2xl p-8 text-center">
+        {children}
+      </div>
     </div>
   );
 }

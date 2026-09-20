@@ -45,6 +45,12 @@ export default tseslint.config([
         { extensions: ['.tsx', '.jsx'] },
       ],
       'react/jsx-one-expression-per-line': 'off',
+      // Function components declare their fallbacks as default parameters,
+      // which is the supported pattern now that defaultProps is deprecated.
+      'react/require-default-props': [
+        'error',
+        { functions: 'defaultArguments' },
+      ],
       'import/no-extraneous-dependencies': [
         'error',
         { devDependencies: true },

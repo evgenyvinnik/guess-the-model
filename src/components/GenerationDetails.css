@@ -1,0 +1,71 @@
+.mil-generation-label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.mil-generation-label strong { font-size: 14px; }
+.mil-generation-label > span { color: #d4d9ed; }
+
+.mil-artwork-reveal {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  padding: 10px;
+  background: #0a0e2bf2;
+  text-align: center;
+}
+
+.mil-generation-details { text-align: left; font-size: 13px; line-height: 1.5; }
+.mil-generation-details dl { margin: 0; }
+.mil-generation-details dl > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px; }
+.mil-generation-details dt { color: #adb9d7; }
+.mil-generation-details dd { margin: 0; overflow-wrap: anywhere; color: #f2f1ff; }
+.mil-generation-basis { margin: 10px 0 0; color: #bdc7df; font-size: 12px; }
+
+.mil-generation-review {
+  width: 100%;
+  max-width: 920px;
+  margin: 20px auto 0;
+  padding: 12px 16px;
+  border: 1px solid #a4b0cf44;
+  border-radius: 6px;
+  background: #090c2399;
+  color: #e4e8f7;
+  text-align: left;
+}
+.mil-generation-review > summary { cursor: pointer; font-size: 13px; }
+.mil-generation-review > summary:focus-visible { outline: 2px solid #ffca77; outline-offset: 4px; }
+.mil-generation-review-list { display: grid; gap: 16px; margin-top: 16px; }
+.mil-generation-review-card { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 16px; padding-bottom: 16px; border-bottom: 1px solid #a4b0cf33; }
+.mil-generation-review-card img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #080b21; }
+.mil-generation-review-card details { grid-column: 1 / -1; margin: 0; }
+.mil-generation-review-card details p { font-size: 12px; line-height: 1.6; color: #cbd2ed; }
+
+.mil-stats-preview-content { padding: 16px; overflow-y: auto; }
+.mil-stats-preview-content > img { width: 100%; max-height: 52dvh; object-fit: contain; margin-bottom: 16px; }
+.mil-stats-preview-prompt { font-size: 13px; line-height: 1.6; text-align: left; color: #cbd2ed; margin-top: 16px; }
+
+.mil-image-prompt { margin-bottom: 20px; text-align: left; }
+.mil-image-prompt-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mil-image-prompt-actions h3 { font-size: 16px; color: #ffce72; font-weight: 700; }
+.mil-image-prompt-actions button { flex-shrink: 0; padding: 7px 12px; border: 1px solid #bdc7dc99; border-radius: 5px; background: #1b214a; color: #fff; font-size: 13px; cursor: pointer; }
+.mil-image-prompt-actions button:hover { background: #303863; }
+.mil-image-prompt-actions button:focus-visible { outline: 2px solid #ffca77; outline-offset: 3px; }
+.mil-image-prompt .mil-stats-preview-prompt { margin-top: 10px; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+.mil-prompt-copy-status { color: #ffce72; font-size: 12px; min-height: 18px; margin-top: 8px; }
+.mil-stats-hover-prompt { position: fixed; z-index: 80; width: min(448px, calc(100vw - 24px)); max-height: min(448px, calc(100dvh - 24px)); overflow-y: auto; border: 2px solid #bdc7dc; border-radius: 8px; background: #0d1231; color: white; box-shadow: 0 16px 48px #0009; text-align: left; }
+.mil-stats-hover-prompt .mil-image-preview-header { position: sticky; top: 0; background: #0d1231; }
+.mil-stats-hover-prompt .mil-image-prompt { padding: 14px; margin: 0; }
+
+@media (max-width: 559px) {
+  .mil-generation-label { font-size: 10px; }
+  .mil-generation-label strong { font-size: 12px; }
+  .mil-generation-review-card { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; }
+  .mil-generation-details dl > div { grid-template-columns: 76px minmax(0, 1fr); }
+}

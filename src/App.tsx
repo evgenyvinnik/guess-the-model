@@ -15,7 +15,7 @@ import StatsPage from './routes/StatsPage.tsx';
 import Game from './routes/Game.tsx';
 import Footer from './components/Footer.tsx';
 import About from './routes/About.tsx';
-import playSound, { playMusic, setMusicEnabled, setSfxEnabled } from './audio.ts';
+import playSound, { setMusicEnabled, setSfxEnabled, Sfx } from './audio.ts';
 
 function App(): ReactElement {
   const [musicOn, setMusicOn] = useState(false);
@@ -28,9 +28,6 @@ function App(): ReactElement {
 
   useEffect(() => {
     setMusicEnabled(musicOn);
-    if (musicOn) {
-      playMusic('/audio/bgm/theme.wav');
-    }
   }, [musicOn]);
 
   useEffect(() => {
@@ -39,16 +36,16 @@ function App(): ReactElement {
 
   const toggleMusic = () => {
     setMusicOn((prev) => !prev);
-    playSound('/audio/sfx/click.wav');
+    playSound(Sfx.Click);
   };
 
   const toggleSfx = () => {
-    playSound('/audio/sfx/click.wav');
+    playSound(Sfx.Click);
     setSfxOn((prev) => !prev);
   };
 
   const toggleMenu = () => {
-    playSound('/audio/sfx/click.wav');
+    playSound(Sfx.Click);
     setMenuOpen((prev) => {
       if (prev) {
         menuButtonRef.current?.blur();
@@ -70,7 +67,7 @@ function App(): ReactElement {
   }, []);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden millionaire-background text-white">
+    <div className="flex h-dvh flex-col overflow-hidden millionaire-background text-white">
       <nav className="navbar bg-transparent">
         <div className="navbar-start flex items-center gap-2">
           <div
@@ -100,24 +97,6 @@ function App(): ReactElement {
               <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
               <li><Link to="/stats" onClick={() => setMenuOpen(false)}>Stats</Link></li>
               <li><Link to="/about" onClick={() => setMenuOpen(false)}>About</Link></li>
-              <li className="lg:hidden">
-                <button
-                  type="button"
-                  onClick={toggleMusic}
-                  className="millionaire-button px-6 py-2 text-sm"
-                >
-                  Music: {musicOn ? 'On' : 'Off'}
-                </button>
-              </li>
-              <li className="lg:hidden">
-                <button
-                  type="button"
-                  onClick={toggleSfx}
-                  className="millionaire-button px-6 py-2 text-sm"
-                >
-                  SFX: {sfxOn ? 'On' : 'Off'}
-                </button>
-              </li>
             </ul>
           </div>
           {showHomeButton && (
@@ -125,22 +104,6 @@ function App(): ReactElement {
           )}
         </div>
       </nav>
-      <div className="fixed bottom-4 right-4 hidden flex-col gap-2 lg:flex">
-        <button
-          type="button"
-          onClick={toggleMusic}
-          className="millionaire-button px-6 py-2 text-sm"
-        >
-          Music: {musicOn ? 'On' : 'Off'}
-        </button>
-        <button
-          type="button"
-          onClick={toggleSfx}
-          className="millionaire-button px-6 py-2 text-sm"
-        >
-          SFX: {sfxOn ? 'On' : 'Off'}
-        </button>
-      </div>
       <main className="flex flex-1 overflow-auto">
         <Routes>
           <Route path="/" element={<Home />} />

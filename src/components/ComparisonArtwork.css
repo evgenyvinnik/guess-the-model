@@ -1,0 +1,284 @@
+.mil-comparison {
+  width: min(100%, clamp(260px, calc(100dvh - 465px), 520px));
+  max-width: 570px;
+  min-width: 0;
+}
+
+.mil-comparison-instruction {
+  margin: 0 0 10px;
+  color: #cbd2ed;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.mil-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mil-comparison-tile {
+  --comparison-rim: var(--mil-chrome);
+  display: flex;
+  position: relative;
+  min-width: 0;
+  flex-direction: column;
+  padding: 2px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--comparison-rim);
+  color: #eef0ff;
+  cursor: zoom-in;
+  box-shadow: 0 0 0 3px #080b2766, 0 7px 24px #03041666;
+  transition: box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.mil-comparison-tile:hover {
+  box-shadow: 0 0 0 3px #d7dfeb33, 0 8px 28px #03041699;
+}
+
+.mil-comparison-tile:focus-visible {
+  outline: 2px solid #ffca77;
+  outline-offset: 4px;
+}
+
+.mil-comparison-picture {
+  position: relative;
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  place-items: center;
+  border-radius: 4px;
+  background: #080b21;
+}
+
+.mil-comparison-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.mil-comparison-letter,
+.mil-comparison-expand {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid #bdc7dc99;
+  border-radius: 3px;
+  background: #0a0e2be6;
+  color: var(--mil-amber);
+  box-shadow: 0 2px 6px #0005;
+}
+
+.mil-comparison-letter {
+  top: 7px;
+  left: 7px;
+  width: 29px;
+  height: 29px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.mil-comparison-expand {
+  right: 7px;
+  bottom: 7px;
+  width: 25px;
+  height: 25px;
+  padding: 4px;
+  color: #e7ebff;
+}
+
+.mil-comparison-selected {
+  --comparison-rim: var(--mil-fill-selected);
+  box-shadow: 0 0 0 2px #ffa32399, 0 0 22px #ffa32333;
+}
+
+.mil-comparison-correct {
+  --comparison-rim: linear-gradient(180deg, #a0ffb8, #43c567 45%, #178b3c);
+  box-shadow: 0 0 0 2px #43c56799, 0 0 22px #43c56733;
+}
+
+.mil-comparison-selected .mil-comparison-letter {
+  border-color: #ffca77;
+  background: var(--mil-fill-selected);
+  color: #201305;
+}
+
+.mil-comparison-correct .mil-comparison-letter {
+  border-color: #a0ffb8;
+  background: #43c567;
+  color: #042810;
+}
+
+.mil-comparison-eliminated {
+  opacity: 0.42;
+}
+
+.mil-comparison-eliminated:hover,
+.mil-comparison-eliminated:focus-visible {
+  opacity: 0.85;
+}
+
+.mil-comparison-caption {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 8px;
+  color: #fff;
+  background: #0a0e2bea;
+  border-radius: 0 0 4px 4px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.mil-comparison-correct .mil-comparison-caption { color: #b3ffc8; }
+
+.mil-comparison-result {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mil-comparison-prompt {
+  margin-top: 9px;
+}
+
+.mil-comparison-unavailable {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 36px 12px;
+  background: radial-gradient(ellipse at center, #2c175080, transparent 75%);
+  color: #cbd2ed;
+  font-size: 13px;
+  text-align: center;
+}
+
+.mil-comparison-unavailable svg {
+  width: 36px;
+  height: 36px;
+}
+
+.mil-image-preview {
+  width: min(920px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid #bdc7dc;
+  border-radius: 8px;
+  background: #090c23;
+  color: #f0f1ff;
+  box-shadow: 0 0 0 4px #080b2766, 0 24px 90px #000a;
+}
+
+.mil-image-preview[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.mil-image-preview::backdrop {
+  background: #030615db;
+  backdrop-filter: blur(6px);
+}
+
+.mil-image-preview-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #a4b0cf44;
+  background: var(--mil-fill);
+}
+
+.mil-image-preview-header h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.mil-image-preview-header h2 span {
+  color: #cbd2ed;
+  font-weight: 400;
+}
+
+.mil-image-preview-header button {
+  display: flex;
+  min-height: 36px;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border: 1px solid #a4b0cf66;
+  border-radius: 4px;
+  background: #101330;
+  color: #edf0ff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.mil-image-preview-header button:hover {
+  background: #2a2051;
+}
+
+.mil-image-preview-header button:focus-visible {
+  outline: 2px solid #ffca77;
+  outline-offset: 3px;
+}
+
+.mil-image-preview-header button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.mil-image-preview-picture {
+  display: grid;
+  width: 100%;
+  height: min(820px, calc(100dvh - 96px));
+  min-height: 0;
+  place-items: center;
+  padding: 10px;
+}
+
+@media (max-width: 559px) {
+  .mil-comparison { width: min(100%, clamp(270px, calc(100dvh - 535px), 380px)); }
+  .mil-comparison-grid { gap: 9px; }
+  .mil-comparison-instruction { font-size: 11px; }
+  .mil-comparison-letter { top: 5px; left: 5px; width: 25px; height: 25px; font-size: 17px; }
+  .mil-comparison-expand { right: 5px; bottom: 5px; width: 23px; height: 23px; }
+  .mil-comparison-caption { flex-wrap: wrap; gap: 3px 6px; font-size: 12px; }
+  .mil-image-preview-header { gap: 8px; padding: 9px 11px; }
+  .mil-image-preview-header h2 { font-size: 15px; }
+}
+
+@media (min-width: 1024px) {
+  .mil-comparison { width: 100%; max-width: none; }
+  .mil-comparison-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mil-comparison-tile { transition: none; }
+}

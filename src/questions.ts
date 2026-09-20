@@ -1,8 +1,14 @@
+import { activeGeneratedImages, generatedImages, type ImageProvenance } from './data/generatedImages.ts';
+
 export const ModelName = {
   ChatGPT: 'ChatGPT',
+  Copilot: 'Copilot',
   EMU: 'EMU',
+  Firefly: 'Firefly',
+  FLUX: 'FLUX',
   Gemini: 'Gemini',
   Grok: 'Grok',
+  MetaAI: 'Meta AI',
   Midjourney: 'Midjourney',
 } as const;
 
@@ -12,9 +18,12 @@ export interface QuestionEntry {
   image: string;
   modelName: ModelName;
   prompt: string;
+  promptId?: string;
+  provenance?: ImageProvenance;
 }
 
-export const questions: Record<string, QuestionEntry> = {
+/** Original ids and labels remain available for previously saved statistics. */
+export const legacyQuestions: Record<string, QuestionEntry> = {
   'c309a6ea-272b-410c-ab60-c0820dabd6e8': {
     image: 'c309a6ea-272b-410c-ab60-c0820dabd6e8',
     modelName: ModelName.ChatGPT,
@@ -616,3 +625,55 @@ export const questions: Record<string, QuestionEntry> = {
     prompt: 'a cosmic whale swimming through a nebula',
   },
 };
+
+const generatedQuestions: Record<string, QuestionEntry> = Object.fromEntries(
+  generatedImages.map(({ id, ...question }) => [id, question]),
+);
+
+/** Complete catalog for statistics, including historical artwork ids. */
+export const questions: Record<string, QuestionEntry> = {
+  ...legacyQuestions,
+  ...generatedQuestions,
+};
+
+const activeQuestions: Record<string, QuestionEntry> = Object.fromEntries(
+  activeGeneratedImages.map(({ id, ...question }) => [id, question]),
+);
+
+/** Once assets are registered, rounds use only the current completed generation batch. */
+export const playableQuestions = activeGeneratedImages.length > 0
+  ? activeQuestions : legacyQuestions;
+
+const playableModels = [
+  ...new Set(Object.values(playableQuestions).map(({ modelName }) => modelName)),
+];
+const fallbackModels = Object.values(ModelName).filter((model) => !playableModels.includes(model));
+
+/** Use playable providers, adding fallback choices only when there are fewer than four. */
+export const answerModels: ModelName[] = [
+  ...playableModels,
+  ...fallbackModels.slice(0, Math.max(0, 4 - playableModels.length)),
+];
+
+/**
+ * Folder names under `public/images` do not always match the model label,
+ * so keep the mapping in one place.
+ */
+export const modelImageDirectory: Record<ModelName, string> = {
+  [ModelName.ChatGPT]: 'ChatGPT',
+  [ModelName.Copilot]: 'Copilot',
+  [ModelName.EMU]: 'Emu',
+  [ModelName.Firefly]: 'Firefly',
+  [ModelName.FLUX]: 'FLUX',
+  [ModelName.Gemini]: 'Gemini',
+  [ModelName.Grok]: 'Grok',
+  [ModelName.MetaAI]: 'MetaAI',
+  [ModelName.Midjourney]: 'Midjourney',
+};
+
+export function imageUrl(model: ModelName, image: string): string {
+  // Manifest paths are public-relative and retain PNG, JPEG, WebP, or other formats.
+  if (image.includes('/')) return `${import.meta.env.BASE_URL}${image}`;
+  const filename = /\.[a-z0-9]+$/i.test(image) ? image : `${image}.png`;
+  return `${import.meta.env.BASE_URL}images/${modelImageDirectory[model]}/${filename}`;
+}
