@@ -1,6 +1,6 @@
 # Challenge image bank
 
-101 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Provider totals are ChatGPT 24, FLUX 24, Meta AI 21, Gemini 15, native Firefly 9, and Copilot 8. The full manifest contains 115 images, including fourteen archived baseline outputs. The target is 24 per provider where each service permits it. Only saved files with manifest entries count toward these totals.
+104 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Provider totals are ChatGPT 24, FLUX 24, Meta AI 24, Gemini 15, native Firefly 9, and Copilot 8. The full manifest contains 118 images, including fourteen archived baseline outputs. The target is 24 per provider where each service permits it. Only saved files with manifest entries count toward these totals.
 
 The exact submitted prompts live in [challengePrompts.ts](../src/data/challengePrompts.ts). Per-image source URLs, dates, model labels, and download notes live in [generatedImages.ts](../src/data/generatedImages.ts). These are illustrative stress tests, not a measured model ranking.
 
@@ -12,7 +12,7 @@ Numbers are saved outputs per provider; a dash means no saved output.
 | --- | --- | --- | --- | --- | --- | --- |
 | elf-archer-low-angle | 2 | 1 | 2 | 2 | 2 | 1 |
 | tailor-mirror | 2 | 1 | 1 | 2 | 2 | 1 |
-| ceramic-chain | 2 | 1 | 1 | 1 | 2 | 1 |
+| ceramic-chain | 2 | 1 | 1 | 3 | 2 | 1 |
 | apothecary-inventory | 2 | 1 | 1 | 1 | 2 | 1 |
 | bicycle-drivetrain | 2 | 1 | — | 2 | 2 | 1 |
 | seventeen-candles | 2 | 1 | 1 | 2 | 2 | 1 |
@@ -21,7 +21,7 @@ Numbers are saved outputs per provider; a dash means no saved output.
 | key-story-continuity | 1 | 1 | — | 1 | 1 | — |
 | precise-cafe-menu | 1 | 1 | — | 1 | 1 | — |
 | maze-valid-route | 2 | 1 | 1 | 2 | 2 | 1 |
-| shoelace-bow | 2 | 1 | 1 | 1 | 2 | — |
+| shoelace-bow | 2 | 1 | 1 | 2 | 2 | — |
 | chess-knight-move | 1 | 1 | — | 1 | 1 | — |
 | piano-c-major | 1 | 1 | — | 1 | 1 | — |
 | nested-glass-refraction | 1 | 1 | — | 1 | 1 | — |
@@ -45,7 +45,7 @@ The September 19 expansion adds shoelace topology, a chess capture, piano finger
 
 A further requested batch adds six Copilot outputs and six additional Meta AI samples for the archer, bicycle, tailor, candles, guitar, and maze prompts. All twelve reuse the exact canonical prompts in fresh conversations. Earlier samples remain in the bank; the additional Meta files have a `-02` suffix. Both question formats automatically draw from these additions using the existing unseen-first history. Six prompt groups now have five distinct providers and six saved outputs. The programmatically rendered Meta maze is a product-level result and should not be interpreted as evidence of an image model's maze-drawing accuracy.
 
-On September 22, ChatGPT and FLUX reached 24 saved challenge outputs each. Native Firefly Image 5 produced additional archer and maze originals after its daily allowance reset; no Adobe-hosted partner model was substituted. The latest FLUX demo outputs show its automatic prompt-attribute rewriting, including for the shoelace prompt. The original submitted prompts are preserved in the manifest.
+On September 22, ChatGPT, FLUX, and Meta AI reached 24 saved challenge outputs each. Meta AI supplied an automatically paired ceramic-chain result and a fresh shoelace result, all saved as unedited JPEGs. Native Firefly Image 5 produced additional archer and maze originals after its daily allowance reset; no Adobe-hosted partner model was substituted. The latest FLUX demo outputs show its automatic prompt-attribute rewriting, including for the shoelace prompt. The original submitted prompts are preserved in the manifest.
 
 The September 12 Meta apothecary original was recovered on September 19 from its saved source conversation; its original generation date remains September 12. Firefly's exact bicycle prompt is 1,159 characters: the UI rejected it on September 19 with a 1,024-character limit. The earlier Firefly bicycle attempt also has no saved output. FLUX supplies the bicycle's fourth provider. The prompt was not shortened for Firefly.
 

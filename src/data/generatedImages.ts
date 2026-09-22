@@ -1891,6 +1891,51 @@ export const generatedImages: GeneratedImage[] = [
       promptProcessing: 'The canonical prompt was submitted verbatim. The demo automatically rewrote it into editable attributes; no attributes were manually changed.',
     },
   },
+  {
+    id: 'metaai-challenge-2026-09-22-ceramic-chain-02',
+    image: 'images/Meta AI/challenge-2026-09-22-ceramic-chain-02.jpg',
+    modelName: 'Meta AI',
+    promptId: 'ceramic-chain',
+    prompt: challengePrompts['ceramic-chain'].prompt,
+    provenance: {
+      generator: 'Meta AI',
+      mode: 'Instant',
+      versionNote: 'Meta AI did not display a backend image-model version. Instant is a conversation mode.',
+      source: 'https://www.meta.ai/prompt/1da752e6-75f6-46c5-8ced-5ff3d5dafb83',
+      generatedAt: '2026-09-22',
+      output: 'First of two automatically paired responses to one exact prompt; UI Download; original 1600 × 1600 JPEG unchanged.',
+    },
+  },
+  {
+    id: 'metaai-challenge-2026-09-22-ceramic-chain-03',
+    image: 'images/Meta AI/challenge-2026-09-22-ceramic-chain-03.jpg',
+    modelName: 'Meta AI',
+    promptId: 'ceramic-chain',
+    prompt: challengePrompts['ceramic-chain'].prompt,
+    provenance: {
+      generator: 'Meta AI',
+      mode: 'Instant',
+      versionNote: 'Meta AI did not display a backend image-model version. Instant is a conversation mode.',
+      source: 'https://www.meta.ai/prompt/1da752e6-75f6-46c5-8ced-5ff3d5dafb83',
+      generatedAt: '2026-09-22',
+      output: 'Second of two automatically paired responses to one exact prompt; UI Download; original 1600 × 1600 JPEG unchanged.',
+    },
+  },
+  {
+    id: 'metaai-challenge-2026-09-22-shoelace-bow-02',
+    image: 'images/Meta AI/challenge-2026-09-22-shoelace-bow-02.jpg',
+    modelName: 'Meta AI',
+    promptId: 'shoelace-bow',
+    prompt: challengePrompts['shoelace-bow'].prompt,
+    provenance: {
+      generator: 'Meta AI',
+      mode: 'Instant',
+      versionNote: 'Meta AI did not display a backend image-model version. Instant is a conversation mode.',
+      source: 'https://www.meta.ai/prompt/98cf1b56-2239-4f1d-8f50-0b1202b7c864',
+      generatedAt: '2026-09-22',
+      output: 'First delivered output from a fresh image request; UI Download; original 1600 × 1600 JPEG unchanged.',
+    },
+  },
 ];
 
 const challengeImages = generatedImages.filter((entry) => (
