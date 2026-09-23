@@ -1,6 +1,6 @@
 # Archived matched image prompts
 
-This is the original 2026-09-12 batch of fox, robot, and teapot scenes. New games now use 123 saved originals from the harder [challenge image prompts](challenge-image-prompts.md). The combined saved collection contains 137 images. These fourteen originals remain saved and registered for historical statistics and image references; `activeGeneratedImages` excludes them while completed challenge images exist.
+This is the original 2026-09-12 batch of fox, robot, and teapot scenes. New games now use 136 saved originals from the harder [challenge image prompts](challenge-image-prompts.md). The combined saved collection contains 150 images. These fourteen originals remain saved and registered for historical statistics and image references; `activeGeneratedImages` excludes them while completed challenge images exist.
 
 The full [image manifest](../src/data/generatedImages.ts) is the authoritative record of each original file, exact submitted prompt, generator, observed version, source URL or tool, date, and selected output. No pending attempt is represented as a completed image. The three exact baseline prompts are preserved below.
 
