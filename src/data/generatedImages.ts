@@ -37,6 +37,8 @@ export interface GeneratedImage {
   promptId: string;
   prompt: string;
   provenance: ImageProvenance;
+  /** Keep a verified original in the catalog until its provider has enough variety for rounds. */
+  playable?: boolean;
 }
 
 /** Register only completed outputs whose image files have been saved in public/. */
@@ -2264,10 +2266,43 @@ export const generatedImages: GeneratedImage[] = [
       output: 'First delivered output in this additional generation; original 1024 × 1024 PNG downloaded through the UI, retained unchanged. Earlier sample remains in the bank.',
     },
   },
+  {
+    id: 'grok-challenge-2026-09-22-bicycle-drivetrain-speed',
+    image: 'images/Grok/challenge-2026-09-22-bicycle-drivetrain-speed.jpg',
+    modelName: 'Grok',
+    promptId: 'bicycle-drivetrain',
+    prompt: challengePrompts['bicycle-drivetrain'].prompt,
+    playable: false,
+    provenance: {
+      generator: 'Grok Imagine',
+      source: 'https://grok.com/imagine/post/972ce8dc-5b46-43db-8337-4965d86d32f3?scope=asset',
+      generatedAt: '2026-09-22',
+      mode: 'Speed, Image, 1:1',
+      versionNote: 'Grok Imagine displayed Speed and Quality 2.0 modes, but did not disclose the backend image-model version for this Speed output.',
+      output: 'First of two delivered outputs; original 960 × 960 JPEG downloaded through the UI, retained unchanged.',
+    },
+  },
+  {
+    id: 'yandex-alice-challenge-2026-09-22-bicycle-drivetrain',
+    image: 'images/YandexAlice/challenge-2026-09-22-bicycle-drivetrain.jpeg',
+    modelName: 'Yandex Alice',
+    promptId: 'bicycle-drivetrain',
+    prompt: challengePrompts['bicycle-drivetrain'].prompt,
+    playable: false,
+    provenance: {
+      generator: 'Yandex Alice AI image generation',
+      source: 'https://yandex.ru/alice/chat/01a0cbc7-134c-4000-8533-0af261c0e0d7/',
+      generatedAt: '2026-09-22',
+      mode: 'Draw picture, 1:1',
+      promptProcessing: 'The Draw picture tool prefixed the submitted English prompt with “нарисуй” (draw). The challenge caption itself was unchanged.',
+      versionNote: 'Alice did not disclose a numbered backend image-model version in this generation surface.',
+      output: 'First displayed output; original 1024 × 1024 JPEG downloaded through the UI, retained unchanged.',
+    },
+  },
 ];
 
 const challengeImages = generatedImages.filter((entry) => (
-  Object.hasOwn(challengePrompts, entry.promptId)
+  entry.playable !== false && Object.hasOwn(challengePrompts, entry.promptId)
 ));
 
 /** New games use the completed challenge outputs; older originals remain in the catalog. */

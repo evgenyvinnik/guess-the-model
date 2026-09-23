@@ -38,8 +38,12 @@ test('registered artwork files and matched prompts are consistent', () => {
 
 test('new rounds use canonical challenge prompts while older originals remain in the catalog', () => {
   const challengeIds = Object.keys(challengePrompts);
-  const challengeEntries = generatedImages.filter((entry) => challengeIds.includes(entry.promptId));
-  const archivedEntries = generatedImages.filter((entry) => !challengeIds.includes(entry.promptId));
+  const challengeEntries = generatedImages.filter((entry) => (
+    entry.playable !== false && challengeIds.includes(entry.promptId)
+  ));
+  const archivedEntries = generatedImages.filter((entry) => (
+    entry.playable === false || !challengeIds.includes(entry.promptId)
+  ));
   expect(challengeEntries.length).toBeGreaterThan(0);
   expect(archivedEntries.length).toBeGreaterThan(0);
   expect(activeGeneratedImages).toEqual(challengeEntries);

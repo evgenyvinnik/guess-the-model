@@ -104,6 +104,7 @@ function StatsPage(): ReactElement {
       [ModelName.Grok]: [],
       [ModelName.MetaAI]: [],
       [ModelName.Midjourney]: [],
+      [ModelName.YandexAlice]: [],
     };
     Object.values(questions).forEach((entry) => {
       if (currentImages.has(entry.image)

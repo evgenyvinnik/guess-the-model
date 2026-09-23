@@ -10,6 +10,7 @@ export const ModelName = {
   Grok: 'Grok',
   MetaAI: 'Meta AI',
   Midjourney: 'Midjourney',
+  YandexAlice: 'Yandex Alice',
 } as const;
 
 export type ModelName = typeof ModelName[keyof typeof ModelName];
@@ -669,6 +670,7 @@ export const modelImageDirectory: Record<ModelName, string> = {
   [ModelName.Grok]: 'Grok',
   [ModelName.MetaAI]: 'MetaAI',
   [ModelName.Midjourney]: 'Midjourney',
+  [ModelName.YandexAlice]: 'YandexAlice',
 };
 
 export function imageUrl(model: ModelName, image: string): string {

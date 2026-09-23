@@ -1,12 +1,12 @@
 # Challenge image bank
 
-123 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Provider totals are ChatGPT 24, FLUX 24, Meta AI 24, Gemini 24, Copilot 15, and native Firefly 12. The full manifest contains 137 images, including fourteen archived baseline outputs. The target is 24 per provider where each service permits it. Only saved files with manifest entries count toward these totals.
+123 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Provider totals are ChatGPT 24, FLUX 24, Meta AI 24, Gemini 24, Copilot 15, and native Firefly 12. The full manifest contains 139 images, including fourteen archived baseline outputs and two newly archived challenge samples from Grok Imagine and Yandex Alice. The target is 24 per provider where each service permits it. Only saved files with manifest entries count toward these totals.
 
 The exact submitted prompts live in [challengePrompts.ts](../src/data/challengePrompts.ts). Per-image source URLs, dates, model labels, and download notes live in [generatedImages.ts](../src/data/generatedImages.ts). These are illustrative stress tests, not a measured model ranking.
 
 ## Coverage
 
-Numbers are saved outputs per provider; a dash means no saved output.
+Numbers are playable saved outputs per provider; a dash means no playable output. One additional Grok Imagine and one Yandex Alice bicycle output are cataloged as archived samples.
 
 | Prompt | ChatGPT | Gemini | Firefly | Meta AI | FLUX | Copilot |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -26,7 +26,7 @@ Numbers are saved outputs per provider; a dash means no saved output.
 | piano-c-major | 1 | 1 | — | 1 | 1 | 1 |
 | nested-glass-refraction | 1 | 1 | — | 1 | 1 | — |
 
-Four-image rounds require four distinct providers with the same prompt id and exact submitted text. Single-image rounds use the same bank. Browser-local history balances target-provider frequency across both question formats and favors underexposed providers among the four comparison images. Within each chosen provider, unseen images appear before its older images repeat. All four displayed comparison images count as seen. The fourteen archived fox, robot, and teapot images remain available to historical statistics and are excluded from new rounds.
+Four-image rounds require four distinct providers with the same prompt id and exact submitted text. Single-image rounds use the same bank. Browser-local history balances target-provider frequency across both question formats and favors underexposed providers among the four comparison images. Within each chosen provider, unseen images appear before its older images repeat. All four displayed comparison images count as seen. The fourteen archived fox, robot, and teapot images remain available to historical statistics and are excluded from new rounds. The two new-provider samples also stay out of rotation until those providers have enough variety to avoid frequent repeats.
 
 ## Generation and version records
 
@@ -36,6 +36,8 @@ Four-image rounds require four distinct providers with the same prompt id and ex
 - **Meta AI:** Instant conversation mode. Originals downloaded through the UI, usually JPEGs with no disclosed backend image-model version. The second maze is a 2400 × 2400 PNG: its displayed generation steps describe constructing the maze with depth-first search and rendering two panels on a canvas. Its provenance explicitly identifies programmatic rendering without attributing it to an image-generation model. Modern Meta AI is distinct from the historical EMU collection.
 - **FLUX:** official Black Forest Labs FLUX.2 [klein] demo; the generated output displays [klein] 9B. Original 1024 × 768 JPEGs are kept at the returned aspect ratio. The browser download supplied a .png filename, which was renamed to .jpg to match the actual JPEG bytes without re-encoding. Each canonical prompt was submitted verbatim. The demo automatically rewrites the displayed prompt into editable attributes, including hexadecimal colors and reformulated wording. This product-level preprocessing is disclosed after the answer; it is not a controlled comparison of raw API prompts. No attributes were manually changed.
 - **Copilot:** Auto conversation mode, with no numbered image-model version shown. Twelve original 1254 × 1254 PNGs identify Azure OpenAI ImageGen in their embedded Content Credentials. The 1024 × 1024 candle PNG instead identifies Microsoft Copilot without naming a backend. See the [metadata audit](copilot-content-credentials.json); embedded claims were inspected, not cryptographically verified. Copilot automatically offered two candle responses; the first displayed response (A) was saved without voting. Its original “Made with AI” mark remains visible.
+- **Grok Imagine:** one September 22 bicycle challenge original, 960 × 960 JPEG, generated in Speed mode and downloaded through the signed-in Chrome UI. Speed is a mode; the interface did not expose the backend image-model version. The output shows only a rear wheel and drivetrain despite the full-bicycle prompt. The older two Grok baseline originals used Quality 2.0 and remain archived.
+- **Yandex Alice:** one September 22 bicycle challenge original, 1024 × 1024 JPEG, generated through Alice's Draw picture tool and downloaded through the signed-in Chrome UI. The tool prefixed the otherwise identical English challenge text with “нарисуй” (draw). The interface did not expose a numbered image-model version.
 
 Version certainty belongs to each dated image. Unknown revisions remain “Version not disclosed.” Flash, Instant, and Auto are modes, not model versions. Expected versions require dated supporting evidence and must be visibly marked as estimates. Answer reveals, session reviews, and identified-image statistics show model/version/date details; prompts before answering omit attribution.
 
@@ -53,7 +55,7 @@ The signed-in Adobe session delivered three more native Firefly Image 5 original
 
 The September 12 Meta apothecary original was recovered on September 19 from its saved source conversation; its original generation date remains September 12. Firefly's exact bicycle prompt is 1,159 characters: the UI rejected it on September 19 with a 1,024-character limit. The earlier Firefly bicycle attempt also has no saved output. FLUX supplies the bicycle's fourth provider. The prompt was not shortened for Firefly.
 
-Grok previously showed upgrade offers in both Quality 2.0 and Speed without generating a challenge image. Its two saved baseline images remain archived. No subscription was purchased. Browser-origin approval for Gemini, Firefly, Meta AI, and Black Forest Labs was granted by the user. Intermittent Chrome timeouts required smaller batches and use of the in-app browser for the public FLUX demo; pending attempts are never counted. A guest-mode Firefly Image 5 ceramic-chain preview remained download-gated by sign-in on September 22 and is also excluded.
+Grok previously showed upgrade offers in both Quality 2.0 and Speed without generating a challenge image. A new Speed attempt succeeded on September 22 in signed-in Chrome; no subscription was purchased. Its two saved baseline images remain archived. Browser-origin approval for Gemini, Firefly, Meta AI, and Black Forest Labs was granted by the user. Intermittent Chrome timeouts required smaller batches and use of the in-app browser for the public FLUX demo; pending attempts are never counted. A guest-mode Firefly Image 5 ceramic-chain preview remained download-gated by sign-in on September 22 and is also excluded.
 
 Observed examples preserved in this bank: ChatGPT's initial archer crops a bow tip; Meta's apothecary shows five stones instead of four; Gemini's chess output contains four boards instead of two; FLUX's kitchen repeats similar viewpoints and its story has eight panels instead of ten. These examples describe individual outputs, not provider-wide performance.
 
