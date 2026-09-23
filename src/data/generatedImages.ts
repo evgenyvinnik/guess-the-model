@@ -2219,6 +2219,51 @@ export const generatedImages: GeneratedImage[] = [
       output: 'First delivered output in a fresh conversation; original 1254 × 1254 PNG downloaded through the UI, retained unchanged. Earlier sample remains in the bank.',
     },
   },
+  {
+    id: 'firefly-challenge-2026-09-22-shoelace-bow-02',
+    image: 'images/Firefly/challenge-2026-09-22-shoelace-bow-02.png',
+    modelName: 'Firefly',
+    promptId: 'shoelace-bow',
+    prompt: challengePrompts['shoelace-bow'].prompt,
+    provenance: {
+      generator: 'Adobe Firefly',
+      modelVersion: { label: 'Firefly Image 5', certainty: 'confirmed', basis: 'Firefly Image 5 was selected in the native Adobe model selector at generation time.' },
+      source: 'https://firefly.adobe.com/generate/image',
+      generatedAt: '2026-09-22',
+      mode: 'Square (1:1), 1K, no references',
+      output: 'First delivered output in this additional generation; original 1024 × 1024 PNG downloaded through the UI, retained unchanged. Earlier sample remains in the bank.',
+    },
+  },
+  {
+    id: 'firefly-challenge-2026-09-22-apothecary-inventory-02',
+    image: 'images/Firefly/challenge-2026-09-22-apothecary-inventory-02.png',
+    modelName: 'Firefly',
+    promptId: 'apothecary-inventory',
+    prompt: challengePrompts['apothecary-inventory'].prompt,
+    provenance: {
+      generator: 'Adobe Firefly',
+      modelVersion: { label: 'Firefly Image 5', certainty: 'confirmed', basis: 'Firefly Image 5 was selected in the native Adobe model selector at generation time.' },
+      source: 'https://firefly.adobe.com/generate/image',
+      generatedAt: '2026-09-22',
+      mode: 'Square (1:1), 1K, no references',
+      output: 'First delivered output in this additional generation; original 1024 × 1024 PNG downloaded through the UI, retained unchanged. Earlier sample remains in the bank.',
+    },
+  },
+  {
+    id: 'firefly-challenge-2026-09-22-guitar-f-major-02',
+    image: 'images/Firefly/challenge-2026-09-22-guitar-f-major-02.png',
+    modelName: 'Firefly',
+    promptId: 'guitar-f-major',
+    prompt: challengePrompts['guitar-f-major'].prompt,
+    provenance: {
+      generator: 'Adobe Firefly',
+      modelVersion: { label: 'Firefly Image 5', certainty: 'confirmed', basis: 'Firefly Image 5 was selected in the native Adobe model selector at generation time.' },
+      source: 'https://firefly.adobe.com/generate/image',
+      generatedAt: '2026-09-22',
+      mode: 'Square (1:1), 1K, no references',
+      output: 'First delivered output in this additional generation; original 1024 × 1024 PNG downloaded through the UI, retained unchanged. Earlier sample remains in the bank.',
+    },
+  },
 ];
 
 const challengeImages = generatedImages.filter((entry) => (
