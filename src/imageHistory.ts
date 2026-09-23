@@ -7,6 +7,8 @@ export interface ImageHistory {
   lastRound: string[];
   /** Image keys ordered from oldest to newest exposure; optional in legacy payloads. */
   recent?: string[];
+  /** Questions targeted per provider; older v1 histories may omit this field. */
+  targets?: Record<string, number>;
 }
 
 function emptyHistory(): ImageHistory {
@@ -48,6 +50,7 @@ function copyHistory(history: ImageHistory): ImageHistory {
     seen: { ...history.seen },
     lastRound: [...history.lastRound],
     recent: normalizeRecent(history.seen, history.lastRound, history.recent),
+    ...(history.targets ? { targets: { ...history.targets } } : {}),
   };
 }
 
@@ -68,7 +71,18 @@ function parseHistory(raw: string | null): ImageHistory {
         (key): key is string => typeof key === 'string' && key.length > 0,
       ))]
       : [];
-    return { seen, lastRound, recent: normalizeRecent(seen, lastRound, value.recent) };
+    const targets = isRecord(value.targets)
+      ? Object.fromEntries(Object.entries(value.targets).filter(
+        (entry): entry is [string, number] => typeof entry[1] === 'number'
+          && Number.isSafeInteger(entry[1]) && entry[1] > 0,
+      ))
+      : undefined;
+    return {
+      seen,
+      lastRound,
+      recent: normalizeRecent(seen, lastRound, value.recent),
+      ...(targets ? { targets } : {}),
+    };
   } catch {
     return emptyHistory();
   }
@@ -93,7 +107,7 @@ export function getImageHistory(): ImageHistory {
   return copyHistory(memoryHistory);
 }
 
-export function recordSeenImages(images: readonly QuestionEntry[]): void {
+export function recordSeenImages(images: readonly QuestionEntry[], target: QuestionEntry): void {
   const history = getImageHistory();
   const keys = [...new Set(images.map(imageHistoryKey))];
   keys.forEach((key) => {
@@ -102,6 +116,13 @@ export function recordSeenImages(images: readonly QuestionEntry[]): void {
   const viewed = new Set(keys);
   history.recent = [...(history.recent ?? []).filter((key) => !viewed.has(key)), ...keys];
   history.lastRound = keys;
+  history.targets = {
+    ...history.targets,
+    [target.modelName]: Math.min(
+      (history.targets?.[target.modelName] ?? 0) + 1,
+      Number.MAX_SAFE_INTEGER,
+    ),
+  };
   memoryHistory = history;
 
   try {

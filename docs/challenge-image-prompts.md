@@ -26,7 +26,7 @@ Numbers are saved outputs per provider; a dash means no saved output.
 | piano-c-major | 1 | 1 | — | 1 | 1 | 1 |
 | nested-glass-refraction | 1 | 1 | — | 1 | 1 | — |
 
-Four-image rounds require four distinct providers with the same prompt id and exact submitted text. Single-image rounds use the same bank. New images enter the existing browser-local unseen-first history automatically; all four displayed comparison images count as seen. The fourteen archived fox, robot, and teapot images remain available to historical statistics and are excluded from new rounds.
+Four-image rounds require four distinct providers with the same prompt id and exact submitted text. Single-image rounds use the same bank. Browser-local history balances target-provider frequency across both question formats and favors underexposed providers among the four comparison images. Within each chosen provider, unseen images appear before its older images repeat. All four displayed comparison images count as seen. The fourteen archived fox, robot, and teapot images remain available to historical statistics and are excluded from new rounds.
 
 ## Generation and version records
 

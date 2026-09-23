@@ -61,7 +61,7 @@ function GameSession({ mode, format }: GameProps & { format: QuestionFormat }): 
   useEffect(() => {
     // Rendering may be retried in Strict Mode; only committed rounds count as seen.
     if (recordedRound.current !== round) {
-      recordSeenImages(round.images);
+      recordSeenImages(round.images, round.target);
       recordedRound.current = round;
     }
   }, [round]);

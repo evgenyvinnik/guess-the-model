@@ -14,10 +14,18 @@ function emptyHistory(): ImageHistory {
 }
 
 /** Simulate what the contestant has seen without relying on persistence internals. */
-function afterViewing(history: ImageHistory, images: QuestionEntry[]): ImageHistory {
+function afterViewing(
+  history: ImageHistory,
+  images: QuestionEntry[],
+  target?: QuestionEntry,
+): ImageHistory {
   const seen = { ...history.seen };
   const keys = [...new Set(images.map(imageHistoryKey))];
   keys.forEach((key) => { seen[key] = (seen[key] ?? 0) + 1; });
+  const targets = target ? {
+    ...history.targets,
+    [target.modelName]: (history.targets?.[target.modelName] ?? 0) + 1,
+  } : history.targets;
   return {
     seen,
     lastRound: keys,
@@ -25,6 +33,7 @@ function afterViewing(history: ImageHistory, images: QuestionEntry[]): ImageHist
       ...(history.recent ?? Object.keys(history.seen)).filter((key) => !keys.includes(key)),
       ...keys,
     ],
+    ...(targets ? { targets } : {}),
   };
 }
 
@@ -54,59 +63,67 @@ async function storedHistory(page: Page): Promise<StoredHistory | null> {
 }
 
 async function expectStoredHistory(page: Page, history: ImageHistory): Promise<void> {
-  await expect.poll(() => storedHistory(page)).toEqual({ version: 1, ...history });
+  await expect.poll(() => storedHistory(page)).toMatchObject({ version: 1, ...history });
 }
 
-test('single rounds show every completed image before reuse, even with constant randomness', () => {
+test('single rounds balance target providers and exhaust each provider before reusing its images', () => {
   const originalRandom = Math.random;
   let history = emptyHistory();
-  const allKeys = activeGeneratedImages.map(imageHistoryKey);
-  const observed = new Set<string>();
+  const providers = [...new Set(activeGeneratedImages.map(({ modelName }) => modelName))];
+  const observed = new Map(providers.map((model) => [model, new Set<string>()]));
   try {
     Math.random = () => 0;
-    for (let index = 0; index < allKeys.length; index += 1) {
+    for (let index = 0; index < providers.length * 12; index += 1) {
       const before = JSON.stringify(history);
       const round = createImageRound('single', history);
       const key = imageHistoryKey(round.target);
       expect(JSON.stringify(history)).toBe(before);
-      expect(observed.has(key)).toBe(false);
+      expect(observed.get(round.target.modelName)?.has(key)).toBe(false);
       expect(round.images).toEqual([round.target]);
       expect(round.answer).toBe(round.target.modelName);
-      observed.add(key);
-      history = afterViewing(history, round.images);
+      observed.get(round.target.modelName)?.add(key);
+      history = afterViewing(history, round.images, round.target);
     }
-    expect([...observed].sort()).toEqual([...allKeys].sort());
-    expect(Object.values(history.seen)).toEqual(allKeys.map(() => 1));
-
-    // At the cycle boundary every image has the same count. The last one should
-    // not immediately repeat merely because the random source stays at zero.
-    const next = createImageRound('single', history);
-    expect(history.lastRound).not.toContain(imageHistoryKey(next.target));
+    expect(providers.map((model) => history.targets?.[model])).toEqual(providers.map(() => 12));
+    expect(providers.map((model) => observed.get(model)?.size)).toEqual(providers.map(() => 12));
+    const nextSix = providers.map(() => {
+      const round = createImageRound('single', history);
+      history = afterViewing(history, round.images, round.target);
+      return round.target.modelName;
+    });
+    expect(new Set(nextSix).size).toBe(providers.length);
+    expect(providers.map((model) => history.targets?.[model])).toEqual(providers.map(() => 13));
   } finally {
     Math.random = originalRandom;
   }
 });
 
-test('a new image is seen first without repeating to catch up with older view counts', () => {
+test('a new image is first within its provider without repeating to catch up with older views', () => {
   const originalRandom = Math.random;
   const newest = activeGeneratedImages[activeGeneratedImages.length - 1];
   const newestKey = imageHistoryKey(newest);
+  const providers = [...new Set(activeGeneratedImages.map(({ modelName }) => modelName))];
+  const providerImages = activeGeneratedImages.filter(
+    ({ modelName }) => modelName === newest.modelName,
+  );
   const history: ImageHistory = {
     seen: Object.fromEntries(
       activeGeneratedImages.slice(0, -1).map((entry) => [imageHistoryKey(entry), 3]),
     ),
     lastRound: [imageHistoryKey(activeGeneratedImages[0])],
+    targets: Object.fromEntries(providers.filter((model) => model !== newest.modelName)
+      .map((model) => [model, 100])),
   };
   try {
     Math.random = () => 0;
     expect(createImageRound('single', history).target.image).toBe(newest.image);
-    let caughtUpOnce = afterViewing(history, [newest]);
+    let caughtUpOnce = afterViewing(history, [newest], newest);
     expect(caughtUpOnce.seen[newestKey]).toBe(1);
-    // A newly added image must not repeat immediately just to catch up with older counts.
-    for (let index = 0; index < activeGeneratedImages.length - 1; index += 1) {
+    for (let index = 0; index < providerImages.length - 1; index += 1) {
       const next = createImageRound('single', caughtUpOnce);
+      expect(next.target.modelName).toBe(newest.modelName);
       expect(next.target.image).not.toBe(newest.image);
-      caughtUpOnce = afterViewing(caughtUpOnce, next.images);
+      caughtUpOnce = afterViewing(caughtUpOnce, next.images, next.target);
     }
   } finally {
     Math.random = originalRandom;
@@ -147,10 +164,51 @@ test('comparison rounds cover eligible artwork while retaining exact prompts and
       );
       expect(new Set(prompts).size).toBe(1);
       expect(round.images[round.options.indexOf(round.answer)]).toBe(round.target);
-      history = afterViewing(history, round.images);
+      history = afterViewing(history, round.images, round.target);
     }
     expect(Object.keys(history.seen).sort()).toEqual(eligibleKeys.sort());
     expect(Object.values(history.seen).reduce((sum, count) => sum + count, 0)).toBe(roundCount * 4);
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
+test('comparison rounds balance target providers and displayed provider exposure', () => {
+  const originalRandom = Math.random;
+  let history = emptyHistory();
+  const providers = [...new Set(activeGeneratedImages.map(({ modelName }) => modelName))];
+  try {
+    Math.random = () => 0;
+    for (let index = 0; index < providers.length * 10; index += 1) {
+      const round = createImageRound('comparison', history);
+      expect(new Set(round.images.map(({ modelName }) => modelName)).size).toBe(4);
+      history = afterViewing(history, round.images, round.target);
+    }
+    expect(providers.map((model) => history.targets?.[model])).toEqual(providers.map(() => 10));
+    const views = providers.map((model) => activeGeneratedImages
+      .filter(({ modelName }) => modelName === model)
+      .reduce((total, entry) => total + (history.seen[imageHistoryKey(entry)] ?? 0), 0));
+    expect(Math.max(...views) - Math.min(...views)).toBeLessThanOrEqual(4);
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
+test('mixing single and comparison rounds keeps provider targets even', () => {
+  const originalRandom = Math.random;
+  let history = emptyHistory();
+  const providers = [...new Set(activeGeneratedImages.map(({ modelName }) => modelName))];
+  try {
+    Math.random = () => 0;
+    for (let index = 0; index < providers.length * 12; index += 1) {
+      const round = createImageRound(index % 2 === 0 ? 'single' : 'comparison', history);
+      history = afterViewing(history, round.images, round.target);
+    }
+    expect(providers.map((model) => history.targets?.[model])).toEqual(providers.map(() => 12));
+    const views = providers.map((model) => activeGeneratedImages
+      .filter(({ modelName }) => modelName === model)
+      .reduce((total, entry) => total + (history.seen[imageHistoryKey(entry)] ?? 0), 0));
+    expect(Math.max(...views) - Math.min(...views)).toBeLessThanOrEqual(4);
   } finally {
     Math.random = originalRandom;
   }
@@ -238,6 +296,10 @@ test('shown images are counted once before answering and persist across reload, 
   expected = afterViewing(expected, await displayedImages(page, 4));
   await expectStoredHistory(page, expected);
   expect(Object.values(expected.seen).reduce((sum, count) => sum + count, 0)).toBe(11);
+  const historyWithTargets = await storedHistory(page);
+  expect(Object.values(historyWithTargets?.targets ?? {})
+    .reduce((sum, count) => sum + count, 0)).toBe(5);
+  expect(Object.values(historyWithTargets?.targets ?? {}).every((count) => count === 1)).toBe(true);
   // Viewing and switching games must not fabricate any guesses or statistics.
   expect(await page.evaluate(() => localStorage.getItem('stats'))).toBeNull();
 });
@@ -245,10 +307,15 @@ test('shown images are counted once before answering and persist across reload, 
 test('exhausted-bank recency persists across reloads instead of repeating low-count images', async ({ page }) => {
   await gotoStable(page, '/');
   const allKeys = activeGeneratedImages.map(imageHistoryKey);
+  const firstModel = activeGeneratedImages[0].modelName;
   const history: ImageHistory = {
     seen: Object.fromEntries(allKeys.map((key) => [key, 100])),
     lastRound: [allKeys[allKeys.length - 1]],
     recent: allKeys,
+    targets: Object.fromEntries(
+      [...new Set(activeGeneratedImages.map(({ modelName }) => modelName))]
+        .filter((model) => model !== firstModel).map((model) => [model, 100]),
+    ),
   };
   history.seen[allKeys[allKeys.length - 1]] = 1;
   await page.evaluate(({ key, saved }) => {
