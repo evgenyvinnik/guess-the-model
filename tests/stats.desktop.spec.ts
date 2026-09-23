@@ -17,9 +17,36 @@ test('the collection contains only playable images until older artwork has been 
   await expect(page.getByRole('region', { name: 'Meta AI statistics', exact: true }))
     .toContainText(`0 of ${providerCount('Meta AI')} current images identified`);
   await expect(page.getByRole('region', { name: 'EMU statistics', exact: true })).toHaveCount(0);
-  await expect(page.getByRole('region', { name: 'Grok statistics', exact: true })).toHaveCount(0);
+  await Promise.all(['Grok', 'Yandex Alice', 'Qwen'].map((provider) => (
+    expect(page.getByRole('region', { name: `${provider} statistics`, exact: true }))
+      .toContainText(`0 of ${providerCount(provider)} current images identified`)
+  )));
   await expect(page.getByTestId('stat-accuracy')).toContainText('0%');
   await expect(page.getByRole('main').getByRole('img')).toHaveCount(0);
+});
+
+test('a correctly identified Qwen image appears in statistics with its prompt and version', async ({ page }) => {
+  const qwen = activeGeneratedImages.find(({ modelName }) => modelName === 'Qwen')!;
+  const stats: Stats = {
+    correct: 1,
+    incorrect: 0,
+    total: 1,
+    classic: { correct: 1, incorrect: 0, total: 1 },
+    quiz: { correct: 0, incorrect: 0, total: 0 },
+    models: {
+      Qwen: {
+        correct: 1, incorrect: 0, total: 1, correctImages: [qwen.image],
+      },
+    },
+  };
+  await gotoStable(page, '/stats', { artwork: 'real', storage: { stats: JSON.stringify(stats) } });
+  const section = page.getByRole('region', { name: 'Qwen statistics', exact: true });
+  await expect(section).toContainText('1 of 1 current images identified');
+  await section.getByRole('button', { name: 'View Qwen image details' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Image generation details' });
+  await expect(dialog).toContainText('Qwen-Image 3.0');
+  await expect(dialog).toContainText(qwen.prompt);
+  await expect(dialog.getByRole('img')).toHaveJSProperty('naturalWidth', 2048);
 });
 
 test('totals, unique originals, new provenance, and earlier collections remain consistent on desktop and mobile', async ({ page }) => {

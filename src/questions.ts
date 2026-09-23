@@ -10,6 +10,7 @@ export const ModelName = {
   Grok: 'Grok',
   MetaAI: 'Meta AI',
   Midjourney: 'Midjourney',
+  Qwen: 'Qwen',
   YandexAlice: 'Yandex Alice',
 } as const;
 
@@ -670,6 +671,7 @@ export const modelImageDirectory: Record<ModelName, string> = {
   [ModelName.Grok]: 'Grok',
   [ModelName.MetaAI]: 'MetaAI',
   [ModelName.Midjourney]: 'Midjourney',
+  [ModelName.Qwen]: 'Qwen',
   [ModelName.YandexAlice]: 'YandexAlice',
 };
 

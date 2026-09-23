@@ -109,7 +109,6 @@ function createSingleRound(history: ImageHistory): ImageRound {
 function providerCandidates(
   group: GeneratedImage[],
   history: ImageHistory,
-  views: Map<QuestionEntry['modelName'], number>,
 ) {
   return [...new Set(group.map(({ modelName }) => modelName))].map((model) => {
     const outputs = oldestEntries(group.filter(({ modelName }) => modelName === model), history);
@@ -119,7 +118,6 @@ function providerCandidates(
       count: exposureCount(outputs[0], history),
       recent: history.lastRound.includes(imageHistoryKey(outputs[0])),
       age: recency(outputs[0], history),
-      views: views.get(model) ?? 0,
     };
   });
 }
@@ -146,11 +144,22 @@ function groupsOfFour(candidates: ProviderCandidate[]): ProviderCandidate[][] {
   return selections;
 }
 
-function selectionScore(candidates: ProviderCandidate[]): number[] {
+function selectionScore(
+  candidates: ProviderCandidate[],
+  views: Map<QuestionEntry['modelName'], number>,
+): number[] {
+  const selected = new Set<QuestionEntry['modelName']>(candidates.map(({ model }) => model));
+  const nextViews = [...views.entries()].map(
+    ([model, count]) => count + Number(selected.has(model)),
+  );
+  const spread = Math.max(...nextViews) - Math.min(...nextViews);
   return [
-    // Minimize provider exposure first, even when image-bank sizes differ.
-    ...candidates.map(({ views }) => views).sort((a, b) => b - a),
+    // Keep provider views within a narrow band when their banks differ in size.
+    Math.max(0, spread - 3),
+    // Within that band, show unseen originals before repeats.
     candidates.filter(({ count }) => count > 0).length,
+    spread,
+    nextViews.reduce((sum, count) => sum + count ** 2, 0),
     candidates.filter(({ recent }) => recent).length,
     ...candidates.map(({ age }) => age).sort((a, b) => b - a),
   ];
@@ -164,9 +173,8 @@ function compareScores(a: number[], b: number[]): number {
 }
 
 function createInitialComparisonRound(history: ImageHistory): ImageRound {
-  const views = providerViews(history);
   const groups = comparisonGroups.map((group) => {
-    const candidates = providerCandidates(group, history, views);
+    const candidates = providerCandidates(group, history);
     const best = [...candidates].sort(compareProviders).slice(0, 4);
     return {
       candidates,
@@ -201,12 +209,12 @@ export function createImageRound(
   if (!history.targets) return createInitialComparisonRound(history);
 
   const targetModels = [...new Set(comparisonGroups.flat().map(({ modelName }) => modelName))];
-  const targetModel = leastTargetModel(targetModels, history);
   const views = providerViews(history);
+  const targetModel = leastTargetModel(targetModels, history);
   const selections = comparisonGroups.flatMap((group) => groupsOfFour(
-    providerCandidates(group, history, views),
+    providerCandidates(group, history),
   ).filter((candidates) => candidates.some(({ model }) => model === targetModel))
-    .map((candidates) => ({ candidates, score: selectionScore(candidates) })))
+    .map((candidates) => ({ candidates, score: selectionScore(candidates, views) })))
     .sort((a, b) => compareScores(a.score, b.score));
   const best = selections.filter(({ score }) => compareScores(score, selections[0].score) === 0);
   const chosen = best[Math.floor(Math.random() * best.length)];

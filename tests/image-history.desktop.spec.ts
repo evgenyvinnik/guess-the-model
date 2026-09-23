@@ -71,6 +71,8 @@ test('single rounds balance target providers and exhaust each provider before re
   let history = emptyHistory();
   const providers = [...new Set(activeGeneratedImages.map(({ modelName }) => modelName))];
   const observed = new Map(providers.map((model) => [model, new Set<string>()]));
+  const providerSizes = new Map(providers.map((model) => [model, activeGeneratedImages
+    .filter((entry) => entry.modelName === model).length]));
   try {
     Math.random = () => 0;
     for (let index = 0; index < providers.length * 12; index += 1) {
@@ -78,14 +80,18 @@ test('single rounds balance target providers and exhaust each provider before re
       const round = createImageRound('single', history);
       const key = imageHistoryKey(round.target);
       expect(JSON.stringify(history)).toBe(before);
-      expect(observed.get(round.target.modelName)?.has(key)).toBe(false);
+      const provider = round.target.modelName;
+      if (observed.get(provider)?.size !== providerSizes.get(provider)) {
+        expect(observed.get(round.target.modelName)?.has(key)).toBe(false);
+      }
       expect(round.images).toEqual([round.target]);
       expect(round.answer).toBe(round.target.modelName);
       observed.get(round.target.modelName)?.add(key);
       history = afterViewing(history, round.images, round.target);
     }
     expect(providers.map((model) => history.targets?.[model])).toEqual(providers.map(() => 12));
-    expect(providers.map((model) => observed.get(model)?.size)).toEqual(providers.map(() => 12));
+    expect(providers.map((model) => observed.get(model)?.size))
+      .toEqual(providers.map((model) => Math.min(12, providerSizes.get(model) ?? 0)));
     const nextSix = providers.map(() => {
       const round = createImageRound('single', history);
       history = afterViewing(history, round.images, round.target);

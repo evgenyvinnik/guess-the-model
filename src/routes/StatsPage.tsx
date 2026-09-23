@@ -104,6 +104,7 @@ function StatsPage(): ReactElement {
       [ModelName.Grok]: [],
       [ModelName.MetaAI]: [],
       [ModelName.Midjourney]: [],
+      [ModelName.Qwen]: [],
       [ModelName.YandexAlice]: [],
     };
     Object.values(questions).forEach((entry) => {

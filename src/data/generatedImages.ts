@@ -2272,7 +2272,6 @@ export const generatedImages: GeneratedImage[] = [
     modelName: 'Grok',
     promptId: 'bicycle-drivetrain',
     prompt: challengePrompts['bicycle-drivetrain'].prompt,
-    playable: false,
     provenance: {
       generator: 'Grok Imagine',
       source: 'https://grok.com/imagine/post/972ce8dc-5b46-43db-8337-4965d86d32f3?scope=asset',
@@ -2288,7 +2287,6 @@ export const generatedImages: GeneratedImage[] = [
     modelName: 'Yandex Alice',
     promptId: 'bicycle-drivetrain',
     prompt: challengePrompts['bicycle-drivetrain'].prompt,
-    playable: false,
     provenance: {
       generator: 'Yandex Alice AI image generation',
       source: 'https://yandex.ru/alice/chat/01a0cbc7-134c-4000-8533-0af261c0e0d7/',
@@ -2297,6 +2295,21 @@ export const generatedImages: GeneratedImage[] = [
       promptProcessing: 'The Draw picture tool prefixed the submitted English prompt with “нарисуй” (draw). The challenge caption itself was unchanged.',
       versionNote: 'Alice did not disclose a numbered backend image-model version in this generation surface.',
       output: 'First displayed output; original 1024 × 1024 JPEG downloaded through the UI, retained unchanged.',
+    },
+  },
+  {
+    id: 'qwen-challenge-2026-09-22-bicycle-drivetrain-image-3',
+    image: 'images/Qwen/challenge-2026-09-22-bicycle-drivetrain-qwen-image-3.png',
+    modelName: 'Qwen',
+    promptId: 'bicycle-drivetrain',
+    prompt: challengePrompts['bicycle-drivetrain'].prompt,
+    provenance: {
+      generator: 'Qwen Studio',
+      modelVersion: { label: 'Qwen-Image 3.0', certainty: 'confirmed', basis: 'Qwen-Image 3.0 was selected in Qwen Studio Create Image mode and labeled on the generated output.' },
+      source: 'https://chat.qwen.ai/c/96cf9c30-8d86-4c70-a96f-38f4d24ca096',
+      generatedAt: '2026-09-22',
+      mode: 'Create Image, 1:1',
+      output: 'First delivered output; original 2048 × 2048 PNG captured unchanged from the rendered full-resolution Qwen result. The separate Chrome Download navigation was blocked by the browser.',
     },
   },
 ];
