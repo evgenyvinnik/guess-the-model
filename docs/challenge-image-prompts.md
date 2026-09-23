@@ -1,6 +1,6 @@
 # Challenge image bank
 
-113 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Provider totals are ChatGPT 24, FLUX 24, Meta AI 24, Gemini 24, native Firefly 9, and Copilot 8. The full manifest contains 127 images, including fourteen archived baseline outputs. The target is 24 per provider where each service permits it. Only saved files with manifest entries count toward these totals.
+120 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Provider totals are ChatGPT 24, FLUX 24, Meta AI 24, Gemini 24, Copilot 15, and native Firefly 9. The full manifest contains 134 images, including fourteen archived baseline outputs. The target is 24 per provider where each service permits it. Only saved files with manifest entries count toward these totals.
 
 The exact submitted prompts live in [challengePrompts.ts](../src/data/challengePrompts.ts). Per-image source URLs, dates, model labels, and download notes live in [generatedImages.ts](../src/data/generatedImages.ts). These are illustrative stress tests, not a measured model ranking.
 
@@ -10,20 +10,20 @@ Numbers are saved outputs per provider; a dash means no saved output.
 
 | Prompt | ChatGPT | Gemini | Firefly | Meta AI | FLUX | Copilot |
 | --- | --- | --- | --- | --- | --- | --- |
-| elf-archer-low-angle | 2 | 2 | 2 | 2 | 2 | 1 |
+| elf-archer-low-angle | 2 | 2 | 2 | 2 | 2 | 2 |
 | tailor-mirror | 2 | 2 | 1 | 2 | 2 | 1 |
 | ceramic-chain | 2 | 2 | 1 | 3 | 2 | 1 |
 | apothecary-inventory | 2 | 2 | 1 | 1 | 2 | 1 |
 | bicycle-drivetrain | 2 | 1 | — | 2 | 2 | 1 |
 | seventeen-candles | 2 | 2 | 1 | 2 | 2 | 1 |
 | guitar-f-major | 2 | 2 | 1 | 2 | 2 | 1 |
-| kitchen-four-views | 1 | 1 | — | 1 | 1 | — |
-| key-story-continuity | 1 | 1 | — | 1 | 1 | — |
-| precise-cafe-menu | 1 | 1 | — | 1 | 1 | — |
+| kitchen-four-views | 1 | 1 | — | 1 | 1 | 1 |
+| key-story-continuity | 1 | 1 | — | 1 | 1 | 1 |
+| precise-cafe-menu | 1 | 1 | — | 1 | 1 | 1 |
 | maze-valid-route | 2 | 2 | 1 | 2 | 2 | 1 |
-| shoelace-bow | 2 | 2 | 1 | 2 | 2 | — |
-| chess-knight-move | 1 | 2 | — | 1 | 1 | — |
-| piano-c-major | 1 | 1 | — | 1 | 1 | — |
+| shoelace-bow | 2 | 2 | 1 | 2 | 2 | 1 |
+| chess-knight-move | 1 | 2 | — | 1 | 1 | 1 |
+| piano-c-major | 1 | 1 | — | 1 | 1 | 1 |
 | nested-glass-refraction | 1 | 1 | — | 1 | 1 | — |
 
 Four-image rounds require four distinct providers with the same prompt id and exact submitted text. Single-image rounds use the same bank. New images enter the existing browser-local unseen-first history automatically; all four displayed comparison images count as seen. The fourteen archived fox, robot, and teapot images remain available to historical statistics and are excluded from new rounds.
@@ -35,7 +35,7 @@ Four-image rounds require four distinct providers with the same prompt id and ex
 - **Adobe:** native Firefly Image 5 selected, Square 1:1, 1K, no reference image; original 1024 × 1024 PNG downloads. Adobe-hosted partner models are not labeled Firefly.
 - **Meta AI:** Instant conversation mode. Originals downloaded through the UI, usually JPEGs with no disclosed backend image-model version. The second maze is a 2400 × 2400 PNG: its displayed generation steps describe constructing the maze with depth-first search and rendering two panels on a canvas. Its provenance explicitly identifies programmatic rendering without attributing it to an image-generation model. Modern Meta AI is distinct from the historical EMU collection.
 - **FLUX:** official Black Forest Labs FLUX.2 [klein] demo; the generated output displays [klein] 9B. Original 1024 × 768 JPEGs are kept at the returned aspect ratio. The browser download supplied a .png filename, which was renamed to .jpg to match the actual JPEG bytes without re-encoding. Each canonical prompt was submitted verbatim. The demo automatically rewrites the displayed prompt into editable attributes, including hexadecimal colors and reformulated wording. This product-level preprocessing is disclosed after the answer; it is not a controlled comparison of raw API prompts. No attributes were manually changed.
-- **Copilot:** Auto conversation mode, with no numbered image-model version shown. Five original 1254 × 1254 PNGs identify Azure OpenAI ImageGen in their embedded Content Credentials. The 1024 × 1024 candle PNG instead identifies Microsoft Copilot without naming a backend. See the [metadata audit](copilot-content-credentials.json); embedded claims were inspected, not cryptographically verified. Copilot automatically offered two candle responses; the first displayed response (A) was saved without voting. Its original “Made with AI” mark remains visible.
+- **Copilot:** Auto conversation mode, with no numbered image-model version shown. Twelve original 1254 × 1254 PNGs identify Azure OpenAI ImageGen in their embedded Content Credentials. The 1024 × 1024 candle PNG instead identifies Microsoft Copilot without naming a backend. See the [metadata audit](copilot-content-credentials.json); embedded claims were inspected, not cryptographically verified. Copilot automatically offered two candle responses; the first displayed response (A) was saved without voting. Its original “Made with AI” mark remains visible.
 
 Version certainty belongs to each dated image. Unknown revisions remain “Version not disclosed.” Flash, Instant, and Auto are modes, not model versions. Expected versions require dated supporting evidence and must be visibly marked as estimates. Answer reveals, session reviews, and identified-image statistics show model/version/date details; prompts before answering omit attribution.
 
@@ -46,6 +46,8 @@ The September 19 expansion adds shoelace topology, a chess capture, piano finger
 A further requested batch adds six Copilot outputs and six additional Meta AI samples for the archer, bicycle, tailor, candles, guitar, and maze prompts. All twelve reuse the exact canonical prompts in fresh conversations. Earlier samples remain in the bank; the additional Meta files have a `-02` suffix. Both question formats automatically draw from these additions using the existing unseen-first history. Six prompt groups now have five distinct providers and six saved outputs. The programmatically rendered Meta maze is a product-level result and should not be interpreted as evidence of an image model's maze-drawing accuracy.
 
 On September 22, ChatGPT, FLUX, Meta AI, and Gemini reached 24 saved challenge outputs each. Meta AI supplied an automatically paired ceramic-chain result and a fresh shoelace result, all saved as unedited JPEGs. Native Firefly Image 5 produced additional archer and maze originals after its daily allowance reset; no Adobe-hosted partner model was substituted. The latest FLUX demo outputs show its automatic prompt-attribute rewriting, including for the shoelace prompt. The original submitted prompts are preserved in the manifest. Nine Gemini Nano Banana 2 outputs were downloaded from separate fresh image requests in Flash mode; one completed bicycle generation had a failed download and is excluded.
+
+Seven further Copilot outputs were downloaded from fresh conversations on September 22, covering the archer, kitchen, key story, menu, shoelace, chess, and piano. All seven preserve the exact submitted prompts, UI-download originals, and observed Azure OpenAI ImageGen family in Content Credentials. A nested-glass-refraction request then returned Copilot's monthly image-creation limit instead of an output, so it is excluded; no upgrade was purchased.
 
 The September 12 Meta apothecary original was recovered on September 19 from its saved source conversation; its original generation date remains September 12. Firefly's exact bicycle prompt is 1,159 characters: the UI rejected it on September 19 with a 1,024-character limit. The earlier Firefly bicycle attempt also has no saved output. FLUX supplies the bicycle's fourth provider. The prompt was not shortened for Firefly.
 
