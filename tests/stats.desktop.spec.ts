@@ -41,7 +41,7 @@ test('a correctly identified Qwen image appears in statistics with its prompt an
   };
   await gotoStable(page, '/stats', { artwork: 'real', storage: { stats: JSON.stringify(stats) } });
   const section = page.getByRole('region', { name: 'Qwen statistics', exact: true });
-  await expect(section).toContainText('1 of 1 current images identified');
+  await expect(section).toContainText(`1 of ${providerCount('Qwen')} current images identified`);
   await section.getByRole('button', { name: 'View Qwen image details' }).click();
   const dialog = page.getByRole('dialog', { name: 'Image generation details' });
   await expect(dialog).toContainText('Qwen-Image 3.0');
