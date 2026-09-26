@@ -124,6 +124,47 @@ function StatsPage(): ReactElement {
 
   const accuracy = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
 
+  const galleryTile = (model: ModelName, entry: QuestionEntry) => {
+    const id = entry.image;
+    const guessed = stats.models[model]?.correctImages?.includes(id);
+    return guessed ? (
+      <button
+        key={id}
+        type="button"
+        aria-label={`View ${model} image details`}
+        aria-haspopup="dialog"
+        className="rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
+        onPointerEnter={(event) => {
+          if (event.pointerType !== 'mouse' || opened) return;
+          clearHoverTimer();
+          triggerRef.current = event.currentTarget;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          hoverTimer.current = window.setTimeout(() => setHovered({
+            entry,
+            left: Math.max(12, Math.min(bounds.left, window.innerWidth - 460)),
+            top: Math.max(12, Math.min(bounds.bottom + 8, window.innerHeight - 460)),
+          }), 350);
+        }}
+        onPointerLeave={scheduleHoverClose}
+        onClick={(event) => {
+          closeHover();
+          triggerRef.current = event.currentTarget;
+          setOpened(entry);
+        }}
+      >
+        <Thumbnail model={model} id={id} />
+      </button>
+    ) : (
+      <div
+        key={id}
+        aria-label="Image not yet identified"
+        className="grid h-20 w-20 place-items-center rounded border border-slate-600 bg-slate-800/70 text-xl text-slate-400"
+      >
+        ?
+      </div>
+    );
+  };
+
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col items-center p-4 text-center text-white">
       <h1 className="mb-6 text-3xl font-bold uppercase tracking-wide text-amber-300">
@@ -169,69 +210,48 @@ function StatsPage(): ReactElement {
       <p className="mb-4 text-sm text-sky-200">Answer totals include past games. The gallery shows the current bank and images you identified earlier.</p>
       {(Object.entries(imagesByModel) as [ModelName, QuestionEntry[]][])
         .filter(([model, images]) => images.length > 0 || stats.models[model]?.total > 0)
-        .map(([model, images]) => (
-          <section key={model} aria-label={`${model} statistics`} className="mb-6 w-full">
-            <h3 className="mb-2 font-bold">
-              {model}
-              {': '}
-              {stats.models[model]?.correct ?? 0}
-              {' correct / '}
-              {stats.models[model]?.incorrect ?? 0}
-              {' incorrect'}
-            </h3>
-            <p className="mb-2 text-sm text-sky-200">
-              {images.filter(({ image }) => currentImages.has(image)
-              && stats.models[model]?.correctImages.includes(image)).length}
-              {' of '}
-              {images.filter(({ image }) => currentImages.has(image)).length}
-              {' current images identified'}
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {images.map((entry) => {
-                const id = entry.image;
-                const guessed = stats.models[model]?.correctImages?.includes(id);
-                return guessed ? (
-                  <button
-                    key={id}
-                    type="button"
-                    aria-label={`View ${model} image details`}
-                    aria-haspopup="dialog"
-                    title={currentImages.has(id) ? undefined : 'Previously identified image from an earlier bank'}
-                    className="rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
-                    onPointerEnter={(event) => {
-                      if (event.pointerType !== 'mouse' || opened) return;
-                      clearHoverTimer();
-                      triggerRef.current = event.currentTarget;
-                      const bounds = event.currentTarget.getBoundingClientRect();
-                      hoverTimer.current = window.setTimeout(() => setHovered({
-                        entry,
-                        left: Math.max(12, Math.min(bounds.left, window.innerWidth - 460)),
-                        top: Math.max(12, Math.min(bounds.bottom + 8, window.innerHeight - 460)),
-                      }), 350);
-                    }}
-                    onPointerLeave={scheduleHoverClose}
-                    onClick={(event) => {
-                      closeHover();
-                      triggerRef.current = event.currentTarget;
-                      setOpened(entry);
-                    }}
-                  >
-                    <Thumbnail model={model} id={id} />
-                    {!currentImages.has(id) && <span className="block text-xs text-sky-200">Earlier bank</span>}
-                  </button>
-                ) : (
-                  <div
-                    key={id}
-                    aria-label="Image not yet identified"
-                    className="grid h-20 w-20 place-items-center rounded border border-slate-600 bg-slate-800/70 text-xl text-slate-400"
-                  >
-                    ?
+        .map(([model, images]) => {
+          const current = images.filter(({ image }) => currentImages.has(image));
+          const earlier = images.filter(({ image }) => !currentImages.has(image));
+          return (
+            <section key={model} aria-label={`${model} statistics`} className="mb-6 w-full">
+              <h3 className="mb-2 font-bold">
+                {model}
+                {': '}
+                {stats.models[model]?.correct ?? 0}
+                {' correct / '}
+                {stats.models[model]?.incorrect ?? 0}
+                {' incorrect'}
+              </h3>
+              <p className="mb-2 text-sm text-sky-200">
+                {current.filter(
+                  ({ image }) => stats.models[model]?.correctImages.includes(image),
+                ).length}
+                {' of '}
+                {current.length}
+                {' current images identified'}
+              </p>
+              <p className="mb-2 text-xs text-sky-200">
+                {current.length}
+                {' distinct prompts in rotation'}
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {current.map((entry) => galleryTile(model, entry))}
+              </div>
+              {earlier.length > 0 && (
+                <details className="mt-3 text-sm text-sky-200">
+                  <summary className="cursor-pointer">
+                    {earlier.length}
+                    {' earlier identified images (outside rotation)'}
+                  </summary>
+                  <div className="mt-3 flex flex-wrap justify-center gap-2">
+                    {earlier.map((entry) => galleryTile(model, entry))}
                   </div>
-                );
-              })}
-            </div>
-          </section>
-        ))}
+                </details>
+              )}
+            </section>
+          );
+        })}
 
       <button
         type="button"

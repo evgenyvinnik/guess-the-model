@@ -1,6 +1,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { expect, type Page } from '@playwright/test';
+import { activeGeneratedImages, type GeneratedImage } from '../src/data/generatedImages.ts';
+import { IMAGE_HISTORY_STORAGE_KEY, imageHistoryKey } from '../src/imageHistory.ts';
 
 /** Must match LOCK_IN_MS and REVEAL_MS in src/routes/Game.tsx. */
 export const LOCK_IN_MS = 1200;
@@ -8,6 +10,18 @@ export const REVEAL_MS = 1600;
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ARTWORK = path.join(HERE, 'fixtures', 'artwork.png');
+
+/** Make one real image the only unseen candidate without relying on bank order. */
+export function storageWithOnlyUnseen(entry: GeneratedImage): Record<string, string> {
+  const seen = Object.fromEntries(activeGeneratedImages
+    .filter(({ id }) => id !== entry.id)
+    .map((other) => [imageHistoryKey(other), 1]));
+  return {
+    [IMAGE_HISTORY_STORAGE_KEY]: JSON.stringify({
+      version: 1, seen, lastRound: [], recent: Object.keys(seen),
+    }),
+  };
+}
 
 type GotoOptions = {
   /** true: fixed fixture; false: simulate missing files; 'real': serve saved outputs. */

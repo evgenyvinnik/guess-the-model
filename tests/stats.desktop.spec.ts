@@ -89,8 +89,13 @@ test('totals, unique originals, new provenance, and earlier collections remain c
   await expect(copilotSection.getByRole('button')).toHaveCount(1);
   const metaSection = page.getByRole('region', { name: 'Meta AI statistics', exact: true });
   await expect(metaSection).toContainText(`1 of ${providerCount('Meta AI')} current images identified`);
+  await expect(metaSection.getByRole('button')).toHaveCount(1);
+  await metaSection.getByText('1 earlier identified images (outside rotation)').click();
   await expect(metaSection.getByRole('button')).toHaveCount(2);
-  await expect(page.getByText('Earlier bank', { exact: true })).toHaveCount(3);
+  const grokSection = page.getByRole('region', { name: 'Grok statistics', exact: true });
+  const emuSection = page.getByRole('region', { name: 'EMU statistics', exact: true });
+  await grokSection.getByText('1 earlier identified images (outside rotation)').click();
+  await emuSection.getByText('1 earlier identified images (outside rotation)').click();
 
   await copilotSection.getByRole('button').click();
   const dialog = page.getByRole('dialog', { name: 'Image generation details' });
@@ -108,14 +113,15 @@ test('totals, unique originals, new provenance, and earlier collections remain c
   await expect(dialog.getByRole('button', { name: 'Close', exact: true })).toBeInViewport();
   await page.keyboard.press('Escape');
   await expect(metaSection.getByRole('button').last()).toBeFocused();
-  await page.getByRole('region', { name: 'Grok statistics', exact: true }).getByRole('button').click();
+  await grokSection.getByRole('button').click();
   await expect(dialog).toContainText('Quality 2.0');
   await page.keyboard.press('Escape');
-  await page.getByRole('region', { name: 'EMU statistics', exact: true }).getByRole('button').click();
+  await emuSection.getByRole('button').click();
   await expect(dialog).toContainText('Version not disclosed');
   await page.keyboard.press('Escape');
   await page.reload();
   await expect(page.getByTestId('stat-guesses')).toContainText('10');
+  await metaSection.getByText('1 earlier identified images (outside rotation)').click();
   await expect(metaSection.getByRole('button')).toHaveCount(2);
 });
 

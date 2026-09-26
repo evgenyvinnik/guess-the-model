@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { activeGeneratedImages } from '../src/data/generatedImages.ts';
 import { generationDate, versionLabel } from '../src/imageProvenance.ts';
-import { gotoStable, LOCK_IN_MS, REVEAL_MS } from './helpers.ts';
+import {
+  gotoStable, LOCK_IN_MS, REVEAL_MS, storageWithOnlyUnseen,
+} from './helpers.ts';
 
 test('version labels preserve uncertainty and generation dates do not shift with the viewer timezone', () => {
   const provenance = { generator: 'Test generator', source: 'Test observation', generatedAt: '2026-09-19' };
@@ -38,9 +40,12 @@ test('single-image version is hidden through lock-in and remains reviewable afte
 });
 
 test('new unversioned outputs do not inherit the older ChatGPT version', async ({ page }) => {
-  const index = activeGeneratedImages.findIndex((entry) => entry.id === 'chatgpt-challenge-2026-09-19-seventeen-candles');
-  expect(index).toBeGreaterThan(-1);
-  await gotoStable(page, '/classic', { random: (index + 0.5) / activeGeneratedImages.length, artwork: 'real' });
+  const entry = activeGeneratedImages.find(
+    ({ id }) => id === 'chatgpt-challenge-2026-09-19-seventeen-candles',
+  )!;
+  await gotoStable(page, '/classic', {
+    storage: storageWithOnlyUnseen(entry), artwork: 'real',
+  });
   await expect(page.getByTestId('generation-label')).toHaveCount(0);
   await page.getByTestId('answer').filter({ hasText: 'ChatGPT' }).click();
   await page.clock.runFor(LOCK_IN_MS);
@@ -76,8 +81,8 @@ test('comparison reveals each original version and reviews only the answered rou
 });
 
 test('saved statistics expose per-image version details with keyboard dismissal and focus return', async ({ page }) => {
-  const index = activeGeneratedImages.findIndex((entry) => entry.modelName === 'Gemini');
-  await gotoStable(page, '/classic', { random: (index + 0.5) / activeGeneratedImages.length });
+  const entry = activeGeneratedImages.find(({ modelName }) => modelName === 'Gemini')!;
+  await gotoStable(page, '/classic', { storage: storageWithOnlyUnseen(entry) });
   await page.getByTestId('answer').filter({ hasText: 'Gemini' }).click();
   await page.clock.runFor(LOCK_IN_MS);
   await page.locator('footer').getByRole('link', { name: 'Stats' }).click();
@@ -90,7 +95,7 @@ test('saved statistics expose per-image version details with keyboard dismissal 
   await expect(dialog).toContainText('Nano Banana 2');
   await expect(dialog).toContainText('Confirmed label');
   await expect(dialog).toContainText('Sep 12, 2026');
-  await expect(dialog).toContainText(activeGeneratedImages[index].prompt);
+  await expect(dialog).toContainText(entry.prompt);
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
   await expect(trigger).toBeFocused();

@@ -6,7 +6,9 @@ import { activeGeneratedImages, generatedImages } from '../src/data/generatedIma
 import { challengePrompts, type ChallengePromptId } from '../src/data/challengePrompts.ts';
 import { createImageRound } from '../src/imageRounds.ts';
 import { answerModels, playableQuestions, questions } from '../src/questions.ts';
-import { gotoStable, LOCK_IN_MS, waitForArtwork } from './helpers.ts';
+import {
+  gotoStable, LOCK_IN_MS, storageWithOnlyUnseen, waitForArtwork,
+} from './helpers.ts';
 
 test('registered artwork files and matched prompts are consistent', () => {
   const publicDirectory = fileURLToPath(new URL('../public/', import.meta.url));
@@ -121,11 +123,10 @@ const registeredModels = [...new Set(activeGeneratedImages.map(({ modelName }) =
 
 registeredModels.forEach((modelName) => {
   test(`${modelName} can be answered correctly and its statistics artwork loads`, async ({ page }) => {
-    const index = activeGeneratedImages.findIndex((entry) => entry.modelName === modelName);
-    const entry = activeGeneratedImages[index];
+    const entry = activeGeneratedImages.find((image) => image.modelName === modelName)!;
     await gotoStable(page, '/classic', {
       artwork: 'real',
-      random: (index + 0.5) / activeGeneratedImages.length,
+      storage: storageWithOnlyUnseen(entry),
     });
     await waitForArtwork(page);
     const image = page.locator('.mil-artwork img');

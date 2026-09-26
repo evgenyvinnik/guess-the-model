@@ -66,7 +66,7 @@ function promptRecency(entry: QuestionEntry, history: ImageHistory): number {
   ), -1);
 }
 
-/** Reuse the oldest artwork, so new additions never have to catch up on lifetime views. */
+/** Show unseen artwork first, then rotate the oldest scenes and images. */
 function oldestEntries<T extends QuestionEntry>(entries: T[], history: ImageHistory): T[] {
   const unseen = entries.filter((entry) => exposureCount(entry, history) === 0);
   const candidates = unseen.length > 0 ? unseen : entries;
@@ -99,15 +99,16 @@ function providerViews(history: ImageHistory): Map<QuestionEntry['modelName'], n
 
 function createSingleRound(history: ImageHistory): ImageRound {
   const allEntries = Object.values(playableQuestions);
-  // Preserve the first selection of a pre-balance history; subsequent rounds
-  // record a target and then rotate providers evenly.
-  const model = history.targets
-    ? leastTargetModel([...new Set(allEntries.map(({ modelName }) => modelName))], history)
+  const unseen = allEntries.filter((entry) => exposureCount(entry, history) === 0);
+  // Balance providers while they have new art. Once every image has appeared,
+  // rotate individual images by recency instead of repeatedly catching a small
+  // provider up to the target count of a much larger bank.
+  const freshModel = unseen.length > 0
+    ? leastTargetModel([...new Set(unseen.map(({ modelName }) => modelName))], history)
     : undefined;
-  const entries = oldestEntries(
-    model ? allEntries.filter((entry) => entry.modelName === model) : allEntries,
-    history,
-  );
+  const entries = freshModel
+    ? oldestEntries(unseen.filter((entry) => entry.modelName === freshModel), history)
+    : oldestEntries(allEntries, history);
   const index = Math.floor(Math.random() * entries.length);
   const target = entries[index];
   const otherModels = answerModels.filter((candidate) => candidate !== target.modelName);
@@ -166,6 +167,9 @@ function selectionScore(
   candidates: ProviderCandidate[],
   views: Map<QuestionEntry['modelName'], number>,
   history: ImageHistory,
+  unseenRemaining: boolean,
+  targetModel: QuestionEntry['modelName'],
+  protectedModels: ReadonlySet<QuestionEntry['modelName']>,
 ): number[] {
   const selected = new Set<QuestionEntry['modelName']>(candidates.map(({ model }) => model));
   const nextViews = [...views.entries()].map(
@@ -173,14 +177,16 @@ function selectionScore(
   );
   const spread = Math.max(...nextViews) - Math.min(...nextViews);
   return [
-    // Keep provider views within a narrow band when their banks differ in size.
+    // Maximize new artwork before displaying any already-seen image.
+    unseenRemaining ? candidates.filter(({ count }) => count > 0).length : 0,
+    // Keep a provider's last fresh image available for its first target turn.
+    candidates.filter(({ model }) => model !== targetModel && protectedModels.has(model)).length,
+    // Space repeated scenes apart when groups offer equally fresh artwork.
+    promptRecency(candidates[0].outputs[0], history),
+    // Balance displayed providers when freshness and scene variety allow it.
     Math.max(0, spread - 3),
-    // Within that band, show unseen originals before repeats.
-    candidates.filter(({ count }) => count > 0).length,
     spread,
     nextViews.reduce((sum, count) => sum + count ** 2, 0),
-    // Among equally balanced selections, space repeated scenes apart.
-    promptRecency(candidates[0].outputs[0], history),
     candidates.filter(({ recent }) => recent).length,
     ...candidates.map(({ age }) => age).sort((a, b) => b - a),
   ];
@@ -212,7 +218,12 @@ function createInitialComparisonRound(history: ImageHistory): ImageRound {
     .map(({ outputs }) => outputs[Math.floor(Math.random() * outputs.length)]);
   const images = shuffle(selected);
   const options = ['Image A', 'Image B', 'Image C', 'Image D'];
-  const targetIndex = Math.floor(Math.random() * images.length);
+  // If a one-image provider appears in the opening board, make it the target
+  // before that sole original is consumed as a distractor.
+  const singletonIndex = images.findIndex(({ modelName }) => activeGeneratedImages
+    .filter((entry) => entry.modelName === modelName).length === 1);
+  const targetIndex = singletonIndex >= 0
+    ? singletonIndex : Math.floor(Math.random() * images.length);
   return {
     format: 'comparison',
     target: images[targetIndex],
@@ -227,15 +238,32 @@ export function createImageRound(
   history: ImageHistory = getImageHistory(),
 ): ImageRound {
   if (format === 'single' || !comparisonAvailable) return createSingleRound(history);
-  if (!history.targets) return createInitialComparisonRound(history);
+  if (Object.keys(history.seen).length === 0) return createInitialComparisonRound(history);
 
-  const targetModels = [...new Set(comparisonGroups.flat().map(({ modelName }) => modelName))];
+  const eligibleEntries = comparisonGroups.flat();
+  const unseen = eligibleEntries.filter((entry) => exposureCount(entry, history) === 0);
+  const targetCandidates = unseen.length > 0 ? unseen : oldestEntries(eligibleEntries, history);
+  const targetModels = [...new Set(targetCandidates.map(({ modelName }) => modelName))];
+  const remainingByModel = new Map<QuestionEntry['modelName'], number>();
+  unseen.forEach(({ modelName }) => {
+    remainingByModel.set(modelName, (remainingByModel.get(modelName) ?? 0) + 1);
+  });
+  const protectedModels = new Set([...remainingByModel.entries()]
+    .filter(([model, count]) => count === 1 && (history.targets?.[model] ?? 0) === 0)
+    .map(([model]) => model));
+  const hasUnseen = unseen.length > 0;
   const views = providerViews(history);
   const targetModel = leastTargetModel(targetModels, history);
   const selections = comparisonGroups.flatMap((group) => groupsOfFour(
     providerCandidates(group, history),
-  ).filter((candidates) => candidates.some(({ model }) => model === targetModel))
-    .map((candidates) => ({ candidates, score: selectionScore(candidates, views, history) })))
+  ).filter((candidates) => candidates.some(
+    ({ model, outputs }) => model === targetModel
+      && outputs.some((entry) => targetCandidates.includes(entry)),
+  ))
+    .map((candidates) => ({
+      candidates,
+      score: selectionScore(candidates, views, history, hasUnseen, targetModel, protectedModels),
+    })))
     .sort((a, b) => compareScores(a.score, b.score));
   const best = selections.filter(({ score }) => compareScores(score, selections[0].score) === 0);
   const chosen = best[Math.floor(Math.random() * best.length)];
