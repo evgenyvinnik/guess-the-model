@@ -1,4 +1,4 @@
-import { activeGeneratedImages, type GeneratedImage } from './data/generatedImages.ts';
+import { activeGeneratedImages, generatedImages, type GeneratedImage } from './data/generatedImages.ts';
 import { answerModels, playableQuestions, type QuestionEntry } from './questions.ts';
 import { getImageHistory, imageHistoryKey, type ImageHistory } from './imageHistory.ts';
 
@@ -50,16 +50,34 @@ function recency(entry: QuestionEntry, history: ImageHistory): number {
   return (history.recent ?? Object.keys(history.seen)).indexOf(imageHistoryKey(entry));
 }
 
+function promptKey(entry: Pick<QuestionEntry, 'promptId' | 'prompt'>): string {
+  return JSON.stringify([entry.promptId, entry.prompt]);
+}
+
+const promptByImage = new Map(generatedImages.map(
+  (entry) => [imageHistoryKey(entry), promptKey(entry)],
+));
+
+/** Older prompts win before another output of a recently shown scene. */
+function promptRecency(entry: QuestionEntry, history: ImageHistory): number {
+  const key = promptKey(entry);
+  return (history.recent ?? Object.keys(history.seen)).reduce((latest, imageKey, index) => (
+    promptByImage.get(imageKey) === key ? index : latest
+  ), -1);
+}
+
 /** Reuse the oldest artwork, so new additions never have to catch up on lifetime views. */
 function oldestEntries<T extends QuestionEntry>(entries: T[], history: ImageHistory): T[] {
   const unseen = entries.filter((entry) => exposureCount(entry, history) === 0);
-  if (unseen.length > 0) return unseen;
-  const outsideLastRound = entries.filter(
+  const candidates = unseen.length > 0 ? unseen : entries;
+  const outsideLastRound = candidates.filter(
     (entry) => !history.lastRound.includes(imageHistoryKey(entry)),
   );
-  const pool = outsideLastRound.length > 0 ? outsideLastRound : entries;
-  const oldest = Math.min(...pool.map((entry) => recency(entry, history)));
-  return pool.filter((entry) => recency(entry, history) === oldest);
+  const pool = outsideLastRound.length > 0 ? outsideLastRound : candidates;
+  const oldestPrompt = Math.min(...pool.map((entry) => promptRecency(entry, history)));
+  const diverse = pool.filter((entry) => promptRecency(entry, history) === oldestPrompt);
+  const oldest = Math.min(...diverse.map((entry) => recency(entry, history)));
+  return diverse.filter((entry) => recency(entry, history) === oldest);
 }
 
 function leastTargetModel(
@@ -147,6 +165,7 @@ function groupsOfFour(candidates: ProviderCandidate[]): ProviderCandidate[][] {
 function selectionScore(
   candidates: ProviderCandidate[],
   views: Map<QuestionEntry['modelName'], number>,
+  history: ImageHistory,
 ): number[] {
   const selected = new Set<QuestionEntry['modelName']>(candidates.map(({ model }) => model));
   const nextViews = [...views.entries()].map(
@@ -160,6 +179,8 @@ function selectionScore(
     candidates.filter(({ count }) => count > 0).length,
     spread,
     nextViews.reduce((sum, count) => sum + count ** 2, 0),
+    // Among equally balanced selections, space repeated scenes apart.
+    promptRecency(candidates[0].outputs[0], history),
     candidates.filter(({ recent }) => recent).length,
     ...candidates.map(({ age }) => age).sort((a, b) => b - a),
   ];
@@ -214,7 +235,7 @@ export function createImageRound(
   const selections = comparisonGroups.flatMap((group) => groupsOfFour(
     providerCandidates(group, history),
   ).filter((candidates) => candidates.some(({ model }) => model === targetModel))
-    .map((candidates) => ({ candidates, score: selectionScore(candidates, views) })))
+    .map((candidates) => ({ candidates, score: selectionScore(candidates, views, history) })))
     .sort((a, b) => compareScores(a.score, b.score));
   const best = selections.filter(({ score }) => compareScores(score, selections[0].score) === 0);
   const chosen = best[Math.floor(Math.random() * best.length)];

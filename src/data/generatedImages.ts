@@ -2467,11 +2467,93 @@ export const generatedImages: GeneratedImage[] = [
       output: 'First delivered output; original 1024 × 1024 JPEG downloaded through the signed-in Chrome UI, retained unchanged.',
     },
   },
+  {
+    id: 'yandex-alice-challenge-2026-09-22-tailor-mirror',
+    image: 'images/YandexAlice/challenge-2026-09-22-tailor-mirror.jpeg',
+    modelName: 'Yandex Alice',
+    promptId: 'tailor-mirror',
+    prompt: challengePrompts['tailor-mirror'].prompt,
+    provenance: {
+      generator: 'Yandex Alice AI image generation',
+      source: 'https://yandex.ru/alice/chat/01a0cbc7-134c-4000-8533-0af261c0e0d7/',
+      generatedAt: '2026-09-22',
+      mode: 'Draw picture, 1:1',
+      promptProcessing: 'The Draw picture tool prefixed the submitted English prompt with “нарисуй” (draw). The challenge caption itself was unchanged.',
+      versionNote: 'Alice did not disclose a numbered backend image-model version in this generation surface.',
+      output: 'First delivered tailor output; original 1024 × 1024 JPEG downloaded through the signed-in Chrome UI, retained unchanged.',
+    },
+  },
+  {
+    id: 'qwen-challenge-2026-09-22-tailor-mirror-image-3',
+    image: 'images/Qwen/challenge-2026-09-22-tailor-mirror.png',
+    modelName: 'Qwen',
+    promptId: 'tailor-mirror',
+    prompt: challengePrompts['tailor-mirror'].prompt,
+    provenance: {
+      generator: 'Qwen Chat Create Image',
+      modelVersion: { label: 'Qwen-Image 3.0', certainty: 'confirmed', basis: 'Qwen-Image 3.0 was selected in Create Image mode and labeled on the generated output.' },
+      source: 'https://chat.qwen.ai/c/8aae5aa0-33be-4777-b392-a80c9b1a5a71',
+      generatedAt: '2026-09-22',
+      mode: 'Create Image, 1:1',
+      output: 'Successful retry after a high-demand error; original 2048 × 2048 PNG saved unchanged from the full-resolution Qwen image viewer.',
+    },
+  },
+  {
+    id: 'yandex-alice-challenge-2026-09-22-nested-glass-refraction',
+    image: 'images/YandexAlice/challenge-2026-09-22-nested-glass-refraction.jpeg',
+    modelName: 'Yandex Alice',
+    promptId: 'nested-glass-refraction',
+    prompt: challengePrompts['nested-glass-refraction'].prompt,
+    provenance: {
+      generator: 'Yandex Alice AI image generation',
+      source: 'https://yandex.ru/alice/chat/01a0cbc7-134c-4000-8533-0af261c0e0d7/',
+      generatedAt: '2026-09-22',
+      mode: 'Draw picture, 1:1',
+      promptProcessing: 'The Draw picture tool prefixed the submitted English prompt with “нарисуй” (draw). The challenge caption itself was unchanged.',
+      versionNote: 'Alice did not disclose a numbered backend image-model version in this generation surface.',
+      output: 'First delivered refraction output; original 1024 × 1024 JPEG downloaded through the signed-in Chrome UI, retained unchanged.',
+    },
+  },
+  {
+    id: 'qwen-challenge-2026-09-22-nested-glass-refraction-image-3',
+    image: 'images/Qwen/challenge-2026-09-22-nested-glass-refraction.png',
+    modelName: 'Qwen',
+    promptId: 'nested-glass-refraction',
+    prompt: challengePrompts['nested-glass-refraction'].prompt,
+    provenance: {
+      generator: 'Qwen Chat Create Image',
+      modelVersion: { label: 'Qwen-Image 3.0', certainty: 'confirmed', basis: 'Qwen-Image 3.0 was selected in Create Image mode and labeled on the generated output.' },
+      source: 'https://chat.qwen.ai/c/8aae5aa0-33be-4777-b392-a80c9b1a5a71',
+      generatedAt: '2026-09-22',
+      mode: 'Create Image, 1:1',
+      output: 'First delivered refraction output; original 2048 × 2048 PNG saved unchanged from the full-resolution Qwen image viewer.',
+    },
+  },
+  {
+    id: 'qwen-challenge-2026-09-22-apothecary-inventory-image-3',
+    image: 'images/Qwen/challenge-2026-09-22-apothecary-inventory.png',
+    modelName: 'Qwen',
+    promptId: 'apothecary-inventory',
+    prompt: challengePrompts['apothecary-inventory'].prompt,
+    provenance: {
+      generator: 'Qwen Chat Create Image',
+      modelVersion: { label: 'Qwen-Image 3.0', certainty: 'confirmed', basis: 'Qwen-Image 3.0 was selected in Create Image mode and labeled on the generated output.' },
+      source: 'https://chat.qwen.ai/c/8aae5aa0-33be-4777-b392-a80c9b1a5a71',
+      generatedAt: '2026-09-22',
+      mode: 'Create Image, 1:1',
+      output: 'Successful retry after a high-demand error; original 2048 × 2048 PNG downloaded from the signed-in Qwen Chat result, retained unchanged.',
+    },
+  },
 ];
 
-const challengeImages = generatedImages.filter((entry) => (
-  entry.playable !== false && Object.hasOwn(challengePrompts, entry.promptId)
-));
+const playablePromptByProvider = new Set<string>();
+const challengeImages = generatedImages.filter((entry) => {
+  if (entry.playable === false || !Object.hasOwn(challengePrompts, entry.promptId)) return false;
+  const providerPrompt = JSON.stringify([entry.modelName, entry.promptId]);
+  if (playablePromptByProvider.has(providerPrompt)) return false;
+  playablePromptByProvider.add(providerPrompt);
+  return true;
+});
 
-/** New games use the completed challenge outputs; older originals remain in the catalog. */
+/** One original per provider and prompt is playable; other originals remain in the catalog. */
 export const activeGeneratedImages = challengeImages.length > 0 ? challengeImages : generatedImages;

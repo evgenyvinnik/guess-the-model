@@ -51,7 +51,7 @@ test('a correctly identified Qwen image appears in statistics with its prompt an
 
 test('totals, unique originals, new provenance, and earlier collections remain consistent on desktop and mobile', async ({ page }) => {
   const copilot = activeGeneratedImages.find(({ id }) => id === 'copilot-challenge-2026-09-19-elf-archer-low-angle')!;
-  const meta = activeGeneratedImages.filter(({ id }) => id.startsWith('metaai-') && id.includes('maze-valid-route'));
+  const meta = generatedImages.filter(({ id }) => id.startsWith('metaai-') && id.includes('maze-valid-route'));
   expect(meta).toHaveLength(2);
   const grok = generatedImages.find(({ modelName }) => modelName === 'Grok')!;
   const emu = Object.values(legacyQuestions).find(({ modelName }) => modelName === 'EMU')!;
@@ -88,9 +88,9 @@ test('totals, unique originals, new provenance, and earlier collections remain c
   await expect(copilotSection).toContainText(`1 of ${providerCount('Copilot')} current images identified`);
   await expect(copilotSection.getByRole('button')).toHaveCount(1);
   const metaSection = page.getByRole('region', { name: 'Meta AI statistics', exact: true });
-  await expect(metaSection).toContainText(`2 of ${providerCount('Meta AI')} current images identified`);
+  await expect(metaSection).toContainText(`1 of ${providerCount('Meta AI')} current images identified`);
   await expect(metaSection.getByRole('button')).toHaveCount(2);
-  await expect(page.getByText('Earlier bank', { exact: true })).toHaveCount(2);
+  await expect(page.getByText('Earlier bank', { exact: true })).toHaveCount(3);
 
   await copilotSection.getByRole('button').click();
   const dialog = page.getByRole('dialog', { name: 'Image generation details' });

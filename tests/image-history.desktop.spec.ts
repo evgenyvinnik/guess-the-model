@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { activeGeneratedImages } from '../src/data/generatedImages.ts';
+import { activeGeneratedImages, generatedImages } from '../src/data/generatedImages.ts';
 import {
   IMAGE_HISTORY_STORAGE_KEY, imageHistoryKey, type ImageHistory,
 } from '../src/imageHistory.ts';
@@ -12,6 +12,14 @@ type StoredHistory = ImageHistory & { version: 1 };
 function emptyHistory(): ImageHistory {
   return { seen: {}, lastRound: [], recent: [] };
 }
+
+test('the playable bank has one output for each provider and prompt', () => {
+  const keys = activeGeneratedImages.map(({ modelName, promptId }) => (
+    JSON.stringify([modelName, promptId])
+  ));
+  expect(new Set(keys).size).toBe(keys.length);
+  expect(generatedImages.length).toBeGreaterThan(activeGeneratedImages.length);
+});
 
 /** Simulate what the contestant has seen without relying on persistence internals. */
 function afterViewing(
@@ -310,7 +318,7 @@ test('shown images are counted once before answering and persist across reload, 
   expect(await page.evaluate(() => localStorage.getItem('stats'))).toBeNull();
 });
 
-test('exhausted-bank recency persists across reloads instead of repeating low-count images', async ({ page }) => {
+test('exhausted-bank prompt diversity persists across reloads', async ({ page }) => {
   await gotoStable(page, '/');
   const allKeys = activeGeneratedImages.map(imageHistoryKey);
   const firstModel = activeGeneratedImages[0].modelName;
@@ -329,12 +337,13 @@ test('exhausted-bank recency persists across reloads instead of repeating low-co
   }, { key: IMAGE_HISTORY_STORAGE_KEY, saved: history });
   await page.goto('classic');
   const first = await displayedImages(page, 1);
-  expect(imageHistoryKey(first[0])).toBe(allKeys[0]);
+  expect(imageHistoryKey(first[0])).not.toBe(allKeys[allKeys.length - 1]);
   let expected = afterViewing(history, first);
   await expectStoredHistory(page, expected);
   await page.reload();
   const second = await displayedImages(page, 1);
-  expect(imageHistoryKey(second[0])).toBe(allKeys[1]);
+  expect(imageHistoryKey(second[0])).not.toBe(imageHistoryKey(first[0]));
+  expect(second[0].promptId).not.toBe(first[0].promptId);
   expected = afterViewing(expected, second);
   await expectStoredHistory(page, expected);
 });

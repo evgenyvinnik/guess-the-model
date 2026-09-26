@@ -1,32 +1,32 @@
 # Challenge image bank
 
-136 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Provider totals are ChatGPT 24, FLUX 24, Meta AI 24, Gemini 24, Copilot 15, native Firefly 12, Yandex Alice 6, Qwen 6, and Grok Imagine 1. The full manifest contains 150 images, including fourteen archived baseline outputs. The target is 24 per provider where each service permits it. Only saved files with manifest entries count toward these totals.
+99 playable originals across 15 difficult prompts are saved and registered, with at least four different providers for every prompt. Each provider contributes at most one playable image to a prompt. Playable totals are ChatGPT 15, Gemini 15, Meta AI 15, FLUX 15, Copilot 14, native Firefly 8, Qwen 8, Yandex Alice 8, and Grok Imagine 1. The full manifest contains 155 originals, including fourteen archived baseline outputs and later variants of already represented provider-prompt pairs. Only saved files with manifest entries count toward these totals.
 
 The exact submitted prompts live in [challengePrompts.ts](../src/data/challengePrompts.ts). Per-image source URLs, dates, model labels, and download notes live in [generatedImages.ts](../src/data/generatedImages.ts). These are illustrative stress tests, not a measured model ranking.
 
 ## Coverage
 
-Numbers are playable saved outputs per provider; a dash means no playable output. Beyond the six columns, Grok Imagine has the bicycle; Yandex Alice has the bicycle, archer, shoelace, candles, ceramic chain, and piano; Qwen has the bicycle, two archer outputs, ceramic chain, candles, and piano.
+Each check mark is one playable saved output; a dash means no playable output. Extra generated variants remain available to historical statistics without entering new rounds.
 
-| Prompt | ChatGPT | Gemini | Firefly | Meta AI | FLUX | Copilot |
-| --- | --- | --- | --- | --- | --- | --- |
-| elf-archer-low-angle | 2 | 2 | 2 | 2 | 2 | 2 |
-| tailor-mirror | 2 | 2 | 1 | 2 | 2 | 1 |
-| ceramic-chain | 2 | 2 | 1 | 3 | 2 | 1 |
-| apothecary-inventory | 2 | 2 | 2 | 1 | 2 | 1 |
-| bicycle-drivetrain | 2 | 1 | — | 2 | 2 | 1 |
-| seventeen-candles | 2 | 2 | 1 | 2 | 2 | 1 |
-| guitar-f-major | 2 | 2 | 2 | 2 | 2 | 1 |
-| kitchen-four-views | 1 | 1 | — | 1 | 1 | 1 |
-| key-story-continuity | 1 | 1 | — | 1 | 1 | 1 |
-| precise-cafe-menu | 1 | 1 | — | 1 | 1 | 1 |
-| maze-valid-route | 2 | 2 | 1 | 2 | 2 | 1 |
-| shoelace-bow | 2 | 2 | 2 | 2 | 2 | 1 |
-| chess-knight-move | 1 | 2 | — | 1 | 1 | 1 |
-| piano-c-major | 1 | 1 | — | 1 | 1 | 1 |
-| nested-glass-refraction | 1 | 1 | — | 1 | 1 | — |
+| Prompt | ChatGPT | Gemini | Firefly | Meta AI | FLUX | Copilot | Grok | Qwen | Yandex Alice |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| elf-archer-low-angle | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+| tailor-mirror | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+| ceramic-chain | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+| apothecary-inventory | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | ✓ | — |
+| bicycle-drivetrain | ✓ | ✓ | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| seventeen-candles | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+| guitar-f-major | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | — | — |
+| kitchen-four-views | ✓ | ✓ | — | ✓ | ✓ | ✓ | — | — | — |
+| key-story-continuity | ✓ | ✓ | — | ✓ | ✓ | ✓ | — | — | — |
+| precise-cafe-menu | ✓ | ✓ | — | ✓ | ✓ | ✓ | — | — | — |
+| maze-valid-route | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | — | — |
+| shoelace-bow | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | — | ✓ |
+| chess-knight-move | ✓ | ✓ | — | ✓ | ✓ | ✓ | — | — | — |
+| piano-c-major | ✓ | ✓ | — | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+| nested-glass-refraction | ✓ | ✓ | — | ✓ | ✓ | — | — | ✓ | ✓ |
 
-Four-image rounds require four distinct providers with the same prompt id and exact submitted text. Single-image rounds use the same bank. Browser-local history balances target-provider frequency across both question formats and favors underexposed providers among the four comparison images. Within each chosen provider, unseen images appear before its older images repeat. All four displayed comparison images count as seen. The fourteen archived fox, robot, and teapot images remain available to historical statistics and are excluded from new rounds. Grok Imagine, Yandex Alice, and Qwen can appear in either format; their smaller banks repeat after their unseen images are exhausted.
+Four-image rounds require four distinct providers with the same prompt id and exact submitted text. Single-image rounds use the same bank. Browser-local history balances target-provider frequency across both question formats and favors underexposed providers among the four comparison images. Within each chosen provider, unseen images and older prompts are preferred before repeats. All four displayed comparison images count as seen. The fourteen archived fox, robot, and teapot images and later duplicate variants remain available to historical statistics and are excluded from new rounds. Grok Imagine, Yandex Alice, and Qwen can appear in either format; their smaller banks repeat after their unseen images are exhausted.
 
 ## Generation and version records
 
@@ -37,8 +37,8 @@ Four-image rounds require four distinct providers with the same prompt id and ex
 - **FLUX:** official Black Forest Labs FLUX.2 [klein] demo; the generated output displays [klein] 9B. Original 1024 × 768 JPEGs are kept at the returned aspect ratio. The browser download supplied a .png filename, which was renamed to .jpg to match the actual JPEG bytes without re-encoding. Each canonical prompt was submitted verbatim. The demo automatically rewrites the displayed prompt into editable attributes, including hexadecimal colors and reformulated wording. This product-level preprocessing is disclosed after the answer; it is not a controlled comparison of raw API prompts. No attributes were manually changed.
 - **Copilot:** Auto conversation mode, with no numbered image-model version shown. Twelve original 1254 × 1254 PNGs identify Azure OpenAI ImageGen in their embedded Content Credentials. The 1024 × 1024 candle PNG instead identifies Microsoft Copilot without naming a backend. See the [metadata audit](copilot-content-credentials.json); embedded claims were inspected, not cryptographically verified. Copilot automatically offered two candle responses; the first displayed response (A) was saved without voting. Its original “Made with AI” mark remains visible.
 - **Grok Imagine:** one September 22 bicycle challenge original, 960 × 960 JPEG, generated in Speed mode and downloaded through the signed-in Chrome UI. Speed is a mode; the interface did not expose the backend image-model version. The output shows only a rear wheel and drivetrain despite the full-bicycle prompt. The older two Grok baseline originals used Quality 2.0 and remain archived.
-- **Yandex Alice:** six September 22 challenge originals (bicycle, archer, shoelace, candles, ceramic chain, piano), all 1024 × 1024 JPEGs generated through Alice's Draw picture tool and downloaded through the signed-in Chrome UI. The tool prefixed each otherwise identical English challenge text with “нарисуй” (draw). The interface did not expose a numbered image-model version. The new candle image has fewer than seventeen candles; the piano image crops the requested two-octave keyboard. These original mistakes, and the earlier shoelace's solid red lace, are retained unchanged.
-- **Qwen:** six September 22 challenge originals (bicycle, two archer outputs, ceramic chain, candles, and piano), all 2048 × 2048 PNGs generated on the official Qwen Chat site in Create Image mode with Qwen-Image 3.0 explicitly selected and labeled on the output. The exact English challenge prompts were submitted unchanged. Chrome's Download navigation was blocked by the browser, so the full-resolution assets already rendered in the page were saved unchanged. No preview or screenshot was used. The candle output has six yellow candles instead of five and remains unedited in the bank.
+- **Yandex Alice:** eight September 22 challenge originals (bicycle, archer, shoelace, candles, ceramic chain, piano, tailor mirror, and refraction), all 1024 × 1024 JPEGs generated through Alice's Draw picture tool and downloaded through the signed-in Chrome UI. The tool prefixed each otherwise identical English challenge text with “нарисуй” (draw). The interface did not expose a numbered image-model version. The candle image has fewer than seventeen candles; the piano image crops the requested two-octave keyboard. These original mistakes, and the shoelace's solid red lace, are retained unchanged.
+- **Qwen:** nine September 22 challenge originals across eight distinct prompts (bicycle, archer, ceramic chain, candles, piano, tailor mirror, refraction, and apothecary inventory), all 2048 × 2048 PNGs generated on the official Qwen Chat site in Create Image mode with Qwen-Image 3.0 explicitly selected and labeled on the output. The exact English challenge prompts were submitted unchanged. One extra archer output remains catalog-only. Full-resolution assets already rendered in the page or downloaded from Qwen Chat were saved unchanged; no preview or screenshot was used. The candle output has six yellow candles instead of five and remains unedited in the catalog.
 
 Version certainty belongs to each dated image. Unknown revisions remain “Version not disclosed.” Flash, Instant, and Auto are modes, not model versions. Expected versions require dated supporting evidence and must be visibly marked as estimates. Answer reveals, session reviews, and identified-image statistics show model/version/date details; prompts before answering omit attribution.
 
@@ -46,7 +46,7 @@ Version certainty belongs to each dated image. Unknown revisions remain “Versi
 
 The September 19 expansion adds shoelace topology, a chess capture, piano fingering, and refraction to the eleven earlier challenges. Keep first outputs unchanged, including visible mistakes, unexpected aspect ratios, and provider-added marks. No manual prompt-compliance repairs or quality-based rerolls were requested. Meta’s chess assistant reported automatically regenerating its first attempt before delivering the image; that provider-side behavior is recorded in its provenance and shown after the answer.
 
-A further requested batch adds six Copilot outputs and six additional Meta AI samples for the archer, bicycle, tailor, candles, guitar, and maze prompts. All twelve reuse the exact canonical prompts in fresh conversations. Earlier samples remain in the bank; the additional Meta files have a `-02` suffix. Both question formats automatically draw from these additions using the existing unseen-first history. Six prompt groups now have five distinct providers and six saved outputs. The programmatically rendered Meta maze is a product-level result and should not be interpreted as evidence of an image model's maze-drawing accuracy.
+A further requested batch adds six Copilot outputs and six additional Meta AI samples for the archer, bicycle, tailor, candles, guitar, and maze prompts. All twelve reuse the exact canonical prompts in fresh conversations. Earlier samples remain in the catalog; the additional Meta files have a `-02` suffix. A newly covered provider-prompt pair becomes playable, while an extra image of the same pair stays catalog-only. The programmatically rendered Meta maze is a product-level result and should not be interpreted as evidence of an image model's maze-drawing accuracy.
 
 On September 22, ChatGPT, FLUX, Meta AI, and Gemini reached 24 saved challenge outputs each. Meta AI supplied an automatically paired ceramic-chain result and a fresh shoelace result, all saved as unedited JPEGs. Native Firefly Image 5 produced additional archer and maze originals after its daily allowance reset; no Adobe-hosted partner model was substituted. The latest FLUX demo outputs show its automatic prompt-attribute rewriting, including for the shoelace prompt. The original submitted prompts are preserved in the manifest. Nine Gemini Nano Banana 2 outputs were downloaded from separate fresh image requests in Flash mode; one completed bicycle generation had a failed download and is excluded.
 
@@ -59,6 +59,8 @@ The September 12 Meta apothecary original was recovered on September 19 from its
 Grok previously showed upgrade offers in both Quality 2.0 and Speed without generating a challenge image. A new Speed attempt succeeded on September 22 in signed-in Chrome; no subscription was purchased. Its two saved baseline images remain archived. Browser-origin approval for Gemini, Firefly, Meta AI, and Black Forest Labs was granted by the user. Intermittent Chrome timeouts required smaller batches and use of the in-app browser for the public FLUX demo; pending attempts are never counted. A guest-mode Firefly Image 5 ceramic-chain preview remained download-gated by sign-in on September 22 and is also excluded.
 
 The later archer attempt in Grok Imagine displayed an upgrade gate before submission, so it produced no new original. Qwen's earlier shoelace request prompted age confirmation before submission and produced no output. The first Qwen ceramic-chain request returned an internal connection error, and the first piano request hit a high-demand error; successful retries supplied the counted results.
+
+The later Qwen and Yandex Alice batch added distinct tailor and refraction prompts to both providers, plus a Qwen apothecary output. Qwen-Image 3.0 was selected explicitly for each new Qwen generation. Yandex Alice returned text instead of an image for the guitar prompt, and its apothecary result was not saved as an original; neither attempt is counted. The 99 playable images represent 99 distinct provider-prompt pairs. Existing extra variants remain in the 155-image catalog for historical statistics, so another ceramic-chain variant from the same provider cannot enter the game rotation.
 
 Observed examples preserved in this bank: ChatGPT's initial archer crops a bow tip; Meta's apothecary shows five stones instead of four; Gemini's chess output contains four boards instead of two; FLUX's kitchen repeats similar viewpoints and its story has eight panels instead of ten. These examples describe individual outputs, not provider-wide performance.
 
