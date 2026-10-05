@@ -197,6 +197,20 @@ test('comparison targets use unseen images while any eligible art remains', () =
   }
 });
 
+test('comparison rounds show only new artwork until no all-new board remains', () => {
+  // Each prompt group yields floor(size / 4) boards of four unseen providers.
+  const freshBoards = getEligibleComparisonGroups()
+    .reduce((sum, group) => sum + Math.floor(group.length / 4), 0);
+  let history = emptyHistory();
+  for (let index = 0; index < freshBoards; index += 1) {
+    const { seen } = history;
+    const round = createImageRound('comparison', history);
+    expect(round.images.map((entry) => seen[imageHistoryKey(entry)] ?? 0))
+      .toEqual([0, 0, 0, 0]);
+    history = afterViewing(history, round.images, round.target);
+  }
+});
+
 test('mixing single and comparison rounds avoids repeated targets while new art remains', () => {
   const originalRandom = Math.random;
   let history = emptyHistory();

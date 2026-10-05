@@ -181,6 +181,8 @@ function selectionScore(
     unseenRemaining ? candidates.filter(({ count }) => count > 0).length : 0,
     // Keep a provider's last fresh image available for its first target turn.
     candidates.filter(({ model }) => model !== targetModel && protectedModels.has(model)).length,
+    // Then ask about the provider that has been the answer least often.
+    history.targets?.[targetModel] ?? 0,
     // Space repeated scenes apart when groups offer equally fresh artwork.
     promptRecency(candidates[0].outputs[0], history),
     // Balance displayed providers when freshness and scene variety allow it.
@@ -253,20 +255,22 @@ export function createImageRound(
     .map(([model]) => model));
   const hasUnseen = unseen.length > 0;
   const views = providerViews(history);
-  const targetModel = leastTargetModel(targetModels, history);
+  // Score every eligible target together so a provider's turn never forces an
+  // already-seen image onto the board while an all-new board is still possible.
   const selections = comparisonGroups.flatMap((group) => groupsOfFour(
     providerCandidates(group, history),
-  ).filter((candidates) => candidates.some(
-    ({ model, outputs }) => model === targetModel
+  ).flatMap((candidates) => candidates.filter(
+    ({ model, outputs }) => targetModels.includes(model)
       && outputs.some((entry) => targetCandidates.includes(entry)),
-  ))
-    .map((candidates) => ({
-      candidates,
-      score: selectionScore(candidates, views, history, hasUnseen, targetModel, protectedModels),
-    })))
+  ).map(({ model: targetModel }) => ({
+    candidates,
+    targetModel,
+    score: selectionScore(candidates, views, history, hasUnseen, targetModel, protectedModels),
+  }))))
     .sort((a, b) => compareScores(a.score, b.score));
   const best = selections.filter(({ score }) => compareScores(score, selections[0].score) === 0);
   const chosen = best[Math.floor(Math.random() * best.length)];
+  const { targetModel } = chosen;
   const selected = chosen.candidates.map(
     ({ outputs }) => outputs[Math.floor(Math.random() * outputs.length)],
   );
