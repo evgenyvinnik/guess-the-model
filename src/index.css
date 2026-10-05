@@ -26,7 +26,11 @@
 
 body {
   font-family: var(--mil-font);
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* Taps should never wait on a double-tap zoom check. */
+button, a, summary, label { touch-action: manipulation; }
 
 @layer components {
   .millionaire-background {
@@ -44,6 +48,13 @@ body {
 
   .mil-home { margin-block: auto; padding-block: 20px; gap: clamp(14px, 2.2vh, 24px); }
   .mil-home .logo-animation { width: clamp(150px, 26vh, 256px); }
+
+  /* Phones: a slimmer navbar, and footer links with a finger-sized hit area. */
+  @media (max-width: 639px), (pointer: coarse) {
+    .mil-navbar { min-height: 0; padding: 6px max(8px, env(safe-area-inset-right)) 6px max(8px, env(safe-area-inset-left)); }
+    .mil-footer-links { column-gap: 0; padding-block: 2px; }
+    .mil-footer-links :is(a, button) { display: inline-block; padding: 10px 7px; }
+  }
 
   .mil-format-picker { width: 100%; max-width: 530px; }
   .mil-format-picker legend {
@@ -241,11 +252,13 @@ body {
     font-weight: 600;
   }
 
-  .mil-answer:hover:not(:disabled) {
-    --frame-start: #191449;
-    --frame-middle: #382063;
-    --frame-end: #48266e;
-    filter: drop-shadow(0 0 6px #a99ce74d);
+  @media (hover: hover) {
+    .mil-answer:hover:not(:disabled) {
+      --frame-start: #191449;
+      --frame-middle: #382063;
+      --frame-end: #48266e;
+      filter: drop-shadow(0 0 6px #a99ce74d);
+    }
   }
 
   .mil-answer:focus-visible {
@@ -411,7 +424,10 @@ body {
     .mil-stage { padding-inline: 6%; margin-bottom: 20px; }
     .mil-stage-main { gap: 16px; }
     .mil-game-toolbar { gap: 14px; }
-    .mil-screen { height: clamp(180px, 26vh, 240px); }
+    .mil-stage-main { gap: 12px; }
+    .mil-game-toolbar { row-gap: 10px; column-gap: 12px; }
+    .mil-game-toolbar .mil-lifeline { height: 2.6rem; width: 3.6rem; }
+    .mil-screen { height: clamp(150px, 28dvh, 260px); }
     .mil-question-panel { gap: 22px; }
     .mil-answers { row-gap: 22px; }
     .mil-plate-question .mil-plate-inner { min-height: 68px; padding-block: 16px; }
@@ -428,8 +444,46 @@ body {
   }
 
   @media (max-width: 559px) {
-    .mil-question-panel { gap: 20px; }
-    .mil-answers { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
+    .mil-question-panel { gap: 16px; }
+    .mil-answers { row-gap: 12px; column-gap: 8px; }
+    .mil-plate-question .mil-plate-inner { min-height: 56px; padding-block: 10px; }
+    .mil-plate-question h2 { font-size: 17px; }
+    .mil-answer > .mil-plate-inner { gap: 5px; padding-inline: 9%; font-size: 16px; line-height: 1.2; }
+    .mil-answer .mil-diamond { display: none; }
+  }
+
+  /* Phones on their side: artwork on the left, the board on the right. */
+  @media (orientation: landscape) and (max-height: 540px) {
+    .mil-game { padding-block: 4px 12px; }
+    /* Flatten the stage so the toolbar can sit above the board, not the art. */
+    .mil-game-board {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr;
+      align-items: center;
+      gap: 8px 12px;
+      padding-inline: 3%;
+    }
+    .mil-stage,
+    .mil-stage-main { display: contents; }
+    .mil-game-toolbar { grid-column: 2; grid-row: 1; flex-wrap: nowrap; gap: 8px; }
+    .mil-game-toolbar > * { min-width: 0; }
+    .mil-game-toolbar p { white-space: nowrap; letter-spacing: 0.04em; }
+    .mil-stage-main > details { grid-column: 1; grid-row: 1; justify-self: center; }
+    .mil-stage-main > :is(.mil-artwork, .mil-comparison) { grid-column: 1; grid-row: 2 / 4; justify-self: center; }
+    .mil-stage-main > :is(.mil-artwork, .mil-comparison):nth-child(2) { grid-row: 1 / 4; }
+    .mil-question-panel { grid-column: 2; grid-row: 2 / 4; }
+    .mil-game-board > :not(.mil-stage, .mil-question-panel) { grid-column: 1 / -1; }
+    .mil-game-toolbar > div { gap: 8px; }
+    .mil-game-toolbar .mil-lifeline { height: 2.3rem; width: 3rem; }
+    .mil-game-toolbar .millionaire-button { padding-inline: 12px; white-space: nowrap; }
+    .mil-screen { height: clamp(140px, calc(100dvh - 150px), 360px); }
+    .mil-question-panel { gap: 14px; }
+    .mil-answers { row-gap: 12px; column-gap: 8px; }
+    .mil-plate-question .mil-plate-inner { min-height: 52px; padding-block: 8px; }
+    .mil-plate-question h2 { font-size: 17px; }
+    .mil-answer > .mil-plate-inner { gap: 5px; font-size: 16px; }
+    .mil-answer .mil-diamond { display: none; }
   }
 
   /* Money ladder rungs. */
@@ -536,9 +590,11 @@ body {
     font-weight: 700;
   }
 
-  .mil-lifeline:hover:not(:disabled) {
-    transform: scale(1.06);
-    filter: drop-shadow(0 0 12px rgba(255, 190, 70, 0.75));
+  @media (hover: hover) {
+    .mil-lifeline:hover:not(:disabled) {
+      transform: scale(1.06);
+      filter: drop-shadow(0 0 12px rgba(255, 190, 70, 0.75));
+    }
   }
 
   .mil-lifeline:disabled {
@@ -564,9 +620,11 @@ body {
     background: linear-gradient(135deg, #10132f, #251447);
   }
 
-  .millionaire-button:hover:not(:disabled) {
-    border-color: #fbbf24;
-    box-shadow: 0 0 12px rgba(251, 191, 36, 0.85);
+  @media (hover: hover) {
+    .millionaire-button:hover:not(:disabled) {
+      border-color: #fbbf24;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.85);
+    }
   }
 
   .millionaire-menu {

@@ -14,9 +14,9 @@ function AudienceChart({ votes }: { votes: AudienceVote[] }): ReactElement {
   const tallest = Math.max(...votes.map((vote) => vote.percent), 1);
 
   return (
-    <div className="flex items-end justify-center gap-5">
+    <div className="flex items-end justify-center gap-2 sm:gap-5">
       {votes.map(({ option, percent }) => (
-        <div key={option} className="flex w-16 flex-col items-center justify-end gap-1">
+        <div key={option} className="flex min-w-0 max-w-16 flex-1 flex-col items-center justify-end gap-1">
           <span className="text-sm font-bold text-amber-300">
             {percent}
             %
@@ -44,7 +44,7 @@ function LifelineResultPanel({ result, onClose }: LifelineResultProps): ReactEle
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">
-      <div className="mil-enter mil-panel w-full max-w-lg rounded-xl p-6 text-white">
+      <div className="mil-enter mil-panel w-full max-w-lg rounded-xl p-5 text-white sm:p-6">
         {result.kind === 'audience' ? (
           <>
             <h3 className="mb-4 text-center text-xl font-bold uppercase tracking-wide">

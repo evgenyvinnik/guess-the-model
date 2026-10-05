@@ -55,20 +55,20 @@ function App(): ReactElement {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: PointerEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('pointerdown', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('pointerdown', handleClickOutside);
     };
   }, []);
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden millionaire-background text-white">
-      <nav className="navbar bg-transparent">
+      <nav className="navbar mil-navbar bg-transparent">
         <div className="navbar-start flex items-center gap-2">
           <div
             ref={menuRef}

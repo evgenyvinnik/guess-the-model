@@ -15,8 +15,8 @@ function Footer({
   toggleSfx,
 }: FooterProps): ReactElement {
   return (
-    <footer className="border-t border-sky-400/40 bg-[#050b30]/90 text-white">
-      <ul className="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-1 p-2 text-sm">
+    <footer className="border-t border-sky-400/40 bg-[#050b30]/90 pb-[env(safe-area-inset-bottom)] text-white">
+      <ul className="mil-footer-links flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-1 p-2 text-sm">
         <li><Link to="/" className="hover:text-amber-300">Home</Link></li>
         <li><Link to="/stats" className="hover:text-amber-300">Stats</Link></li>
         <li><Link to="/about" className="hover:text-amber-300">About</Link></li>
