@@ -275,7 +275,7 @@ function GameSession({ mode, format }: GameProps & { format: QuestionFormat }): 
 
             {mode === 'classic' && (
               <details className="w-full max-w-xs lg:hidden">
-                <summary className="cursor-pointer text-center text-xs uppercase tracking-widest text-sky-200">
+                <summary className="cursor-pointer py-1.5 text-center text-xs uppercase tracking-widest text-sky-200">
                   Prize ladder
                 </summary>
                 <MoneyLadder current={questionIndex} className="mx-auto mt-2 w-full" />
